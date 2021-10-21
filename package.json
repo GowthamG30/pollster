@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/GowthamG30/pollster/issues"
   },
-  "homepage": "https://github.com/GowthamG30/pollster#readme"
+  "homepage": "https://github.com/GowthamG30/pollster#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
 }
