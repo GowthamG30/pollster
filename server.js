@@ -2,9 +2,9 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
-const path = require("path")
+const path = require("path");
 const cors = require('cors');
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -15,7 +15,8 @@ app.get('/', (req, res) => {
 });
 
 // app.get('/polls', (req, res) => {
-//   res.redirect('/');
+//   console.log("yeayy");
+//   // res.sendFile(path.join(__dirname,'frontend\\build','index.html'));
 // });
 
 server.listen(port, () => {
