@@ -25,6 +25,11 @@ function Navbar() {
               Public Polls
             </li>
           </Link>
+          <Link to="/about">
+            <li class="nav-item">
+              About
+            </li>
+          </Link>
         </ul>
       </div>
     </nav>
