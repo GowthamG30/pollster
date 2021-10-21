@@ -1,0 +1,35 @@
+:root {
+	--blue:  #3DB2FF;
+	--lightpink: #FAEFEF;
+	--orange: #fea02f;
+}
+
+body {
+	background-color: white;
+}
+
+.navbar {
+	background-color: var(--blue);
+	padding: 2% 12% 2% 12%;
+	color: white;
+}
+
+.navbar-brand {
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: bold;
+	font-size: 2.5rem;
+}
+
+.home-section {
+	padding: 10% 12% 2% 12%;
+}
+
+.big-heading {
+	font-size: 3rem;
+	line-height: 1.5;
+	font-weight: 900;
+}
+
+footer {
+	text-align: center;
+}
