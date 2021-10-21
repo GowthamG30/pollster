@@ -5,13 +5,14 @@
 }
 
 body {
-	background-color: white;
+	background: rgb(255,148,23);
+	background: linear-gradient(45deg, var(--orange), var(--blue)) no-repeat;
+	height: 100vh;
 }
 
 .navbar {
-	background-color: var(--blue);
+	/* background-color: var(--blue); */
 	padding: 2% 12% 2% 12%;
-	color: white;
 }
 
 .navbar-brand {
@@ -25,11 +26,16 @@ body {
 }
 
 .big-heading {
+	color: white;
 	font-size: 3rem;
 	line-height: 1.5;
 	font-weight: 900;
 }
 
 footer {
+	color: white;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 	text-align: center;
 }
