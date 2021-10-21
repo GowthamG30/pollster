@@ -1,24 +1,33 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark">	
-				<a href="#" class="navbar-brand">Pollster</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div>
+        <ul>
+          <Link to="/">
+            <li>
+              Pollster
+            </li>
+          </Link>
+        </ul>
+      </div>
 
-				<div class="collapse navbar-collapse" id="navbarToggler">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="#pricing">Public Polls</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#cta">About Us</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav ml-auto">
+          <Link to="/polls">
+            <li class="nav-item">
+              Public Polls
+            </li>
+          </Link>
+        </ul>
+      </div>
+    </nav>
   );
 }
 

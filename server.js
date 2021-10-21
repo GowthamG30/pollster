@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname,'frontend\\build','index.html'));
 });
 
-app.get('/polls', (req, res) => {
-  res.redirect('/');
-});
+// app.get('/polls', (req, res) => {
+//   res.redirect('/');
+// });
 
 server.listen(port, () => {
   console.log('listening on ' + port);
