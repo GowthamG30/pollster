@@ -11,20 +11,23 @@ const http = require('http');
 const server = http.createServer(app);
 
 app.use(cors());
-app.use(express.json());
-// app.use(bodyParser.urlencoded({extended: true}));
-// app.use(bodyParser.json());
+// app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(express.static("public"));
 // app.use(express.static(path.join(__dirname,'frontend\\build')));
 
 mongoose.connect(process.env.MONGOURI, {useNewUrlParser: true, useUnifiedTopology: true}); // check these later
 
-const postSchema = new mongoose.Schema({
+const pollSchema = new mongoose.Schema({
   question: String,
-  options: [String]
+  options: [{
+    name: String,
+    count: Number
+  }]
 });
 
-const Post = mongoose.model("Post", postSchema);
+const Poll = mongoose.model("Poll", pollSchema);
 
 // build
 // app.get('/', (req, res) => {
@@ -32,26 +35,30 @@ const Post = mongoose.model("Post", postSchema);
 // });
 
 app.get('/api/polls', (req, res) => {
-  Post.find({},(err, foundPosts)=>{
+  Poll.find({},(err, foundPosts)=>{
     res.json(foundPosts);
   });
-  // try {
-  //   res.send();
-  // } catch(err) {
-  //   console.log(err);
-  // }
 });
 
-// app.post('/api/create', (req, res) => {
-//
-// });
+app.post('/api/create', (req, res) => {
+  const options = [];
+  req.body.options.map((element) => {
+    options.push({name: element, count: 0});
+  });
+  const data = new Poll({
+    question: req.body.question,
+    options: options
+  });
+  // console.log(data);
+  data.save();
+});
 
 app.listen(port, () => {
-  console.log('Server listening on port ' + port);
+  console.log('Server running on port ' + port);
 });
 
 // build
 // server.listen(port, () => {
-//   console.log('Server listening on port ' + port);
+//   console.log('Server running on port ' + port);
 // });
 

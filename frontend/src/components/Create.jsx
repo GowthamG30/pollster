@@ -1,4 +1,6 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { Redirect } from "react-router";
 
 const Create = () => {
 
@@ -27,19 +29,40 @@ const Create = () => {
   
   let handleSubmit = (event) => {
     event.preventDefault();
-    console.log(question);
-    console.log(options);
-    // alert(JSON.stringify(options));
+    
+    const params = JSON.stringify({
+      "question": question,
+      "options": options
+    });
+    
+    axios
+      .post('/api/create', params, {
+        "headers": {
+          "content-type": "application/json",
+        },})
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+
+    // <Redirect
+    //   to="/polls"
+    // />
+
+    // nested call back
+
+    // axios
+    //   .get('/polls')
+    //   .then(res => setTasks(res.data))
+    //   .catch(err => console.error(err));
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label>Question</label>
-      <input type="text" name="question" value={question || ""} onChange={e => handleQuestion(e)} />
+      <input type="text" name="question" value={question || ""} autocomplete="off" onChange={e => handleQuestion(e)} />
       {options.map((element, index) => (
         <div className="form-inline" key={index}>
           
-          <input type="text" name="option" value={element || ""} onChange={e => handleChange(index, e)} />
+          <input type="text" name="option" value={element || ""} autocomplete="off" onChange={e => handleChange(index, e)} />
           {
             index ? 
               <button type="button"  className="button remove" onClick={() => removeOptions(index)}>Remove</button> 
