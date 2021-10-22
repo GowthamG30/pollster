@@ -15,10 +15,11 @@ app.use(express.static("public"));
 //   res.sendFile(path.join(__dirname,'frontend\\build','index.html'));
 // });
 
-// app.get('/polls', (req, res) => {
-//   console.log("yeayy");
-//   // res.sendFile(path.join(__dirname,'frontend\\build','index.html'));
-// });
+app.get('/polls', (req, res) => {
+  console.log("yeayy");
+  res.send("hello");
+  // res.sendFile(path.join(__dirname,'frontend\\build','index.html'));
+});
 
 // server.listen(port, () => {
 //   console.log('listening on ' + port);

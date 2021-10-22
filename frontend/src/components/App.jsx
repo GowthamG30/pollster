@@ -15,7 +15,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/" exact component={Body} />
-          <Route path="/polls" exact component={Polls} />
+          <Route path="/publicPolls" exact component={Polls} />
           <Route path="/about" exact component={About} />
           <Route path="/create" exact component={Create} />
         </Switch>
