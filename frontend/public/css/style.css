@@ -10,18 +10,69 @@ body {
 	height: 100vh;
 }
 
-.navbar {
-	padding: 2% 12% 2% 12%;
+a {
+	color: white;
 }
 
-.navbar-brand {
+a:hover {
+	color: white;
+	text-decoration: none;
+
+}
+
+.navigation-bar {
+	padding: 3% 12% 7% 12%;
+	background-color: none;
+	display: flex;
+	justify-content: space-between;
+}
+
+.logo {
 	font-family: 'Ubuntu', sans-serif;
 	font-weight: bold;
 	font-size: 2.5rem;
 }
 
+.nav-list {
+	list-style: none;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	
+}
+
+.nav-item {
+	margin: 0 2rem;
+}
+
 .home-section {
-	padding: 10% 12% 2% 12%;
+	padding: 3% 12% 3% 12%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.home-left-section {
+	width: 50%;
+}
+
+.home-right-section {
+	width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.createButton {
+	background-color: var(--orange);
+	text-decoration: none;
+	border: none;
+	padding: 4% 9%;
+	font-weight: bold;
+	font-size: 2rem;
+	border-radius: 10rem;
 }
 
 .big-heading {
