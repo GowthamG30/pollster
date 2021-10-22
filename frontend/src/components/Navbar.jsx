@@ -3,35 +3,23 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark">
-      <div>
-        <ul>
-          <Link to="/">
-            <li>
-              Pollster
-            </li>
-          </Link>
-        </ul>
-      </div>
+    <nav className="navigation-bar">
+			<Link to="/" className="logo">
+				Pollster
+			</Link>
 
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-
-      <div className="collapse navbar-collapse" id="navbarToggler">
-        <ul className="navbar-nav ml-auto">
-          <Link to="/publicPolls">
-            <li className="nav-item">
-              Public Polls
-            </li>
-          </Link>
-          <Link to="/about">
-            <li className="nav-item">
-              About
-            </li>
-          </Link>
-        </ul>
-      </div>
+			<ul className="nav-list">
+				<li className="nav-item">
+					<Link to="/publicPolls">
+							Public Polls
+					</Link>
+				</li>
+				<li className="nav-item">
+					<Link to="/about">
+							About
+					</Link>
+				</li>
+			</ul>
     </nav>
   );
 }
