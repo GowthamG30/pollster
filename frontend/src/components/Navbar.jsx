@@ -10,7 +10,7 @@ const Navbar = () => {
 
 			<ul className="nav-list">
 				<li className="nav-item">
-					<Link to="/publicPolls">
+					<Link to="/polls">
 							Public Polls
 					</Link>
 				</li>

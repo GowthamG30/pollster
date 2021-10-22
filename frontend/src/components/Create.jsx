@@ -51,7 +51,7 @@ const Create = () => {
           <button className="button add" type="button" onClick={() => addOptions()}>Add</button>
           <button className="button submit" type="submit">Submit</button>
       </div>
-  </form>
+    </form>
   );
 }
 

@@ -5,7 +5,7 @@ const Polls = () => {
 
   useEffect(() => {
     axios
-    .get("http://localhost:5000/polls")
+    .get("/api/polls")
     .then(res => console.log(res))
     .catch(err => console.error(err));
   }, []);
