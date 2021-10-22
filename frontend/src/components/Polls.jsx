@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Polls() {
+const Polls = () => {
 
   useEffect(() => {
     axios

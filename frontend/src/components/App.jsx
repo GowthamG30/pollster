@@ -8,7 +8,7 @@ import Create from "./Create";
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 import axios from "axios";
 
-function App() {
+const App = () => {
   return (
     <Router>
       <div>
