@@ -53,6 +53,16 @@ app.post('/api/create', (req, res) => {
   data.save();
 });
 
+app.get('/api/poll/:id', (req, res) => {
+  let id = req.params.id;
+  Poll.findById(id, (err, result) => {
+    if(err) {
+      throw err;
+    }
+    res.json(result);
+  });
+});
+
 app.listen(port, () => {
   console.log('Server running on port ' + port);
 });

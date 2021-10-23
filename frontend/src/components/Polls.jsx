@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 import axios from "axios";
-import Poll from "./Poll";
 
 const Polls = () => {
 
@@ -19,12 +19,11 @@ const Polls = () => {
       {
         polls.length ?
         polls.map((poll) => {
-          return <Poll
-            key={poll._id}
-            id={poll._id}
-            question={poll.question}
-            options={poll.options}
-          />;
+          return (
+            <Link to={"/poll/"+poll._id}>
+              {poll.question}
+            </Link>
+          );
         })
         : <h3>Oops... No polls !!</h3>
       }

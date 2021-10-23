@@ -43,6 +43,10 @@ const Create = () => {
       .then(res => console.log(res))
       .catch(err => console.error(err));
 
+    window.location.href = '../polls';
+
+    // these below ones didn't work 
+
     // <Redirect
     //   to="/polls"
     // />
