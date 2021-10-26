@@ -89,3 +89,10 @@ footer {
 	width: 100%;
 	text-align: center;
 }
+
+.loader {
+  height: 1rem;
+  width: 1rem;
+  border: 3rem solid gray;
+  border-radius: 50%;
+}

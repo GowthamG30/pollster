@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios"
+import Loader from "./Loader";
 
 const Poll = () => {
 
@@ -8,7 +9,6 @@ const Poll = () => {
   const [location, setLocation] = useState(useLocation());
 
   useEffect(() => {
-
     let id = "";
     let i = location.pathname.length - 1;
     while(location.pathname[i] !== '/') {
@@ -20,16 +20,23 @@ const Poll = () => {
     .get("/api/poll/" + id)
     .then(res => setPoll(res.data))
     .catch(err => console.error(err));
-  }, [location]); // check
+  }, [location]);
 
   return (
-    <div className="poll">
-      <h4>{poll.question}</h4>
+    <div>
       {
-        poll.options.map((option) => {
-          return <h5>{option.name} {option.count}</h5>;
-        })
+        poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
+        <Loader /> :
+        <div className="poll">
+          <h4>{poll.question}</h4>
+          {
+            poll.options.map((option) => {
+              return <h5>{option.name} {option.count}</h5>;
+            })
+          }
+        </div>
       }
+
     </div>
   );
 }

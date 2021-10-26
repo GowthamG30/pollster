@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import axios from "axios";
+import Loader from "./Loader";
 
 const Polls = () => {
 
@@ -15,17 +16,16 @@ const Polls = () => {
 
   return (
     <div>
-      {console.log(polls)}
       {
         polls.length ?
         polls.map((poll) => {
           return (
             <Link to={"/poll/"+poll._id}>
-              {poll.question}
+              <h1>{poll.question}</h1>
             </Link>
           );
-        })
-        : <h3>Oops... No polls !!</h3>
+        }) :
+        <Loader />
       }
     </div>
     
