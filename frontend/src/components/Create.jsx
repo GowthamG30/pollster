@@ -50,13 +50,6 @@ const Create = () => {
     // <Redirect
     //   to="/polls"
     // />
-
-    // nested call back
-
-    // axios
-    //   .get('/polls')
-    //   .then(res => setTasks(res.data))
-    //   .catch(err => console.error(err));
   }
 
   return (

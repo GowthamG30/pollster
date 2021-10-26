@@ -2,25 +2,27 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios"
 import Loader from "./Loader";
+import { Link, useParams } from "react-router-dom";
 
 const Poll = () => {
 
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
   const [location, setLocation] = useState(useLocation());
+  let { id } = useParams();
 
   useEffect(() => {
-    let id = "";
-    let i = location.pathname.length - 1;
-    while(location.pathname[i] !== '/') {
-      id = location.pathname[i] + id;
-      i--;
-    }
+    // let id = "";
+    // let i = location.pathname.length - 1;
+    // while(location.pathname[i] !== '/') {
+    //   id = location.pathname[i] + id;
+    //   i--;
+    // }
 
     axios
     .get("/api/poll/" + id)
     .then(res => setPoll(res.data))
     .catch(err => console.error(err));
-  }, [location]);
+  }, [id]);
 
   return (
     <div>
@@ -34,9 +36,11 @@ const Poll = () => {
               return <h5>{option.name} {option.count}</h5>;
             })
           }
+          <Link to={"/poll/"+id+"/stats"} params={{id: id}}>
+            Stats
+          </Link>
         </div>
       }
-
     </div>
   );
 }

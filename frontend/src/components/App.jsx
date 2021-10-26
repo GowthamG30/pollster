@@ -6,6 +6,7 @@ import Polls from "./Polls";
 import Poll from "./Poll";
 import About from "./About";
 import Create from "./Create";
+import Stats from "./Stats";
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'; 
 import axios from "axios";
 
@@ -19,7 +20,8 @@ const App = () => {
           <Route path="/polls" exact component={Polls} />
           <Route path="/about" exact component={About} />
           <Route path="/create" exact component={Create} />
-          <Route path="/poll/:id" component={Poll}/> { /* check */}
+          <Route path="/poll/:id" exact component={Poll}/> { /* check */}
+          <Route path="/poll/:id/stats" exact component={Stats}/> {/* check */}
         </Switch>
         <Footer />
       </div>

@@ -20,7 +20,7 @@ const Polls = () => {
         polls.length ?
         polls.map((poll) => {
           return (
-            <Link to={"/poll/"+poll._id}>
+            <Link to={"/poll/"+poll._id} params={{id: poll._id}}>
               <h1>{poll.question}</h1>
             </Link>
           );
