@@ -43,6 +43,9 @@ const Stats = () => {
 
   return (
     <div>
+      <Link to={"/poll/"+id} params={{id: id}}>
+        Back
+      </Link>
       <Bar
         data={data}
         options={options}  

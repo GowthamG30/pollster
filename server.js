@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const app = express();
 const http = require('http');
+const { listenerCount } = require('process');
 const server = http.createServer(app);
 
 app.use(cors());
@@ -60,6 +61,19 @@ app.get('/api/poll/:id', (req, res) => {
       throw err;
     }
     res.json(result);
+  });
+});
+
+app.post('/api/vote/:id', (req, res) => {
+  const id = req.params.id; // body better?
+  const poll = req.body.poll;
+  const index = req.body.index;
+  const newOptions = poll.options;
+  newOptions[index].count++;
+  Poll.findOneAndUpdate({_id: id}, {options: newOptions}, function(err, doc) {
+    if(err) {
+      console.log(err);
+    }
   });
 });
 

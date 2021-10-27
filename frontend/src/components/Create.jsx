@@ -7,27 +7,27 @@ const Create = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
 
-  let handleChange = (i, e) => {
-    let newOptions = [...options];
+  const handleChange = (i, e) => {
+    const newOptions = [...options];
     newOptions[i] = e.target.value;
     setOptions(newOptions);
   }
 
-  let handleQuestion= (e) => {
+  const handleQuestion= (e) => {
     setQuestion(e.target.value);
   }
   
-  let addOptions = () => {
+  const addOptions = () => {
     setOptions([...options, ""]);
   }
   
-  let removeOptions = (i) => {
-    let newOptions = [...options];
+  const removeOptions = (i) => {
+    const newOptions = [...options];
     newOptions.splice(i, 1);
     setOptions(newOptions);
   }
   
-  let handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     
     const params = JSON.stringify({
