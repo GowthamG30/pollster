@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios"
 import Loader from "./Loader";
-import { Link, useParams } from "react-router-dom";
 
 const Poll = () => {
-
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
   const [index, setIndex] = useState(-1);
-  const [location, setLocation] = useState(useLocation());
-  let { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    // let id = "";
-    // let i = location.pathname.length - 1;
-    // while(location.pathname[i] !== '/') {
-    //   id = location.pathname[i] + id;
-    //   i--;
-    // }
-
     axios
     .get("/api/poll/" + id)
     .then(res => setPoll(res.data))
@@ -35,14 +25,14 @@ const Poll = () => {
       });
       
       axios
-        .post('/api/vote/' + id, params, {
+        .post("/api/vote/" + id, params, {
           "headers": {
             "content-type": "application/json",
           },})
         .then(res => console.log(res))
         .catch(err => console.error(err));
   
-      window.location.href = '../poll/' + id + '/stats'; // path check
+      window.location.href = "../poll/" + id + "/stats"; // path check
       // or use redirect
     }
     else {
@@ -80,13 +70,13 @@ const Poll = () => {
             <button className="button submit" type="submit">Submit</button>
           </form>
 
-          <Link to={"/poll/"+id+"/stats"} params={{id: id}}>
+          <Link to={"/poll/"+id+"/stats"}>
             Stats
           </Link>
         </div>
       }
     </div>
   );
-}
+};
 
 export default Poll;

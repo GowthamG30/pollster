@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"
-import Loader from "./Loader";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import { Bar } from "react-chartjs-2";
 
 const Stats = () => {
-
-  // const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
   const [names, setNames] = useState([]);
   const [counts, setCounts] = useState([]);
-  let { id } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     axios
@@ -27,7 +24,7 @@ const Stats = () => {
   const data = {
     labels: names,
     datasets: [{
-        label: '# of Votes',
+        label: "# of Votes",
         data: counts,
         borderWidth: 1
     }]
@@ -43,7 +40,7 @@ const Stats = () => {
 
   return (
     <div>
-      <Link to={"/poll/"+id} params={{id: id}}>
+      <Link to={"/poll/" + id}>
         Back
       </Link>
       <Bar
@@ -52,6 +49,6 @@ const Stats = () => {
       />
     </div>
   );
-}
+};
 
 export default Stats;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -11,7 +11,7 @@ const Navbar = () => {
 			<ul className="nav-list">
 				<li className="nav-item">
 					<Link to="/polls">
-							Public Polls
+							Polls
 					</Link>
 				</li>
 				<li className="nav-item">
@@ -22,6 +22,6 @@ const Navbar = () => {
 			</ul>
     </nav>
   );
-}
+};
 
 export default Navbar;

@@ -1,20 +1,20 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { Redirect } from "react-router";
+import axios from "axios";
+// import { Redirect } from "react-router";
 
 const Create = () => {
 
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
 
-  const handleChange = (i, e) => {
+  const handleChange = (i, event) => {
     const newOptions = [...options];
-    newOptions[i] = e.target.value;
+    newOptions[i] = event.target.value;
     setOptions(newOptions);
   }
 
-  const handleQuestion= (e) => {
-    setQuestion(e.target.value);
+  const handleQuestion= (event) => {
+    setQuestion(event.target.value);
   }
   
   const addOptions = () => {
@@ -36,16 +36,14 @@ const Create = () => {
     });
     
     axios
-      .post('/api/create', params, {
+      .post("/api/create", params, {
         "headers": {
           "content-type": "application/json",
         },})
       .then(res => console.log(res))
       .catch(err => console.error(err));
 
-    window.location.href = '../polls';
-
-    // these below ones didn't work 
+    window.location.href = "../polls";
 
     // <Redirect
     //   to="/polls"
@@ -55,11 +53,11 @@ const Create = () => {
   return (
     <form onSubmit={handleSubmit}>
       <label>Question</label>
-      <input type="text" name="question" value={question || ""} autocomplete="off" onChange={e => handleQuestion(e)} />
+      <input type="text" name="question" value={question || ""} autocomplete="off" onChange={event => handleQuestion(event)} />
       {options.map((element, index) => (
         <div className="form-inline" key={index}>
           
-          <input type="text" name="option" value={element || ""} autocomplete="off" onChange={e => handleChange(index, e)} />
+          <input type="text" name="option" value={element || ""} autocomplete="off" onChange={event => handleChange(index, event)} />
           {
             index ? 
               <button type="button"  className="button remove" onClick={() => removeOptions(index)}>Remove</button> 
@@ -73,6 +71,6 @@ const Create = () => {
       </div>
     </form>
   );
-}
+};
 
 export default Create;
