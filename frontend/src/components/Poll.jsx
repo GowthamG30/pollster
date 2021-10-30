@@ -29,7 +29,7 @@ const Poll = () => {
       });
       
       axios
-        .post("/api/vote/" + id, params, {
+        .post("/api/vote/" + id, params, { 
           "headers": {
             "content-type": "application/json",
           },})
@@ -49,42 +49,37 @@ const Poll = () => {
   };
 
   return (
-    <div>
-      {
-        loaded ?
-        (
-          poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
-          <h5>Empty poll...</h5> :
-          <div className="poll">
-            <form onSubmit={handleSubmit}>
-              <h4>{poll.question}</h4>
-              {
-                poll.options.map((option, index) => {
-                  return (
-                    <label className="option">
-                      <input
-                        type="radio"
-                        value={index}
-                        onChange={onValueChange}
-                        name={id}
-                      />
-                      {option.name}
-                    </label>
-                  );
-                })
-              }
-              <button className="button submit" type="submit">Submit</button>
-            </form>
-
-            <Link to={"/poll/"+id+"/stats"}>
-              Stats
-            </Link>
-          </div>
-        )
-        :
-        <Loader />
-      }
-    </div>
+    loaded ?
+    (
+      poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
+      <h5>Empty poll...</h5> :
+      <div className="poll">
+        <Link to={"/poll/"+id+"/stats"}>
+          <p>Stats</p>
+        </Link>
+        <form onSubmit={handleSubmit}>
+          <p className="poll-label">{poll.question}</p>
+          {
+            poll.options.map((option, index) => {
+              return (
+                <label className="option">
+                  <input
+                    type="radio"
+                    value={index}
+                    onChange={onValueChange}
+                    name={id}
+                  />
+                  <p>{option.name}</p>
+                </label>
+              );
+            })
+          }
+          <button className="button submit" type="submit">Submit</button>
+        </form>
+      </div>
+    )
+    :
+    <Loader />
   );
 };
 

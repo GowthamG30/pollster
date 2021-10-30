@@ -18,23 +18,19 @@ const Polls = () => {
   }, []);
 
   return (
-    <div>
-      {
-        loaded ?
-        (
-          polls.length ?
-          polls.map((poll) => {
-            return (
-              <Link to={"/poll/" + poll._id}>
-                <h1>{poll.question === "" ? "Empty question" : poll.question}</h1>
-              </Link>
-            );
-          }) :
-          <h5>Oops no polls...</h5>
-        ) :
-        <Loader />
-      }
-    </div>
+    loaded ?
+      polls.length ?
+      <div className="polls">
+        {polls.map((poll) => {
+          return (
+            <Link to={"/poll/" + poll._id}>
+              <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")}</p>
+            </Link>
+          );
+        })}
+      </div> :
+      <h5>Oops no polls...</h5> :
+    <Loader />
   );
 };
 
