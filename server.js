@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
-const {Poll} = require("./database.js");
+const { Poll, User } = require("./database.js");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 
@@ -23,7 +23,7 @@ app.use(express.static("public"));
 // });
 
 app.get("/api/polls", (req, res) => {
-  Poll.find({},(err, foundPosts)=>{
+  Poll.find({},(err, foundPosts) => {
     res.json(foundPosts);
   });
 });
