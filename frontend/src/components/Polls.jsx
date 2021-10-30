@@ -5,25 +5,33 @@ import Loader from "./Loader";
 
 const Polls = () => {
   const [polls, setPolls] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     axios
     .get("/api/polls")
-    .then(res => setPolls(res.data))
+    .then(res => {
+      setPolls(res.data);
+      setLoaded(true);
+    })
     .catch(err => console.error(err));
   }, []);
 
   return (
     <div>
       {
-        polls.length ?
-        polls.map((poll) => {
-          return (
-            <Link to={"/poll/" + poll._id}>
-              <h1>{poll.question}</h1>
-            </Link>
-          );
-        }) :
+        loaded ?
+        (
+          polls.length ?
+          polls.map((poll) => {
+            return (
+              <Link to={"/poll/" + poll._id}>
+                <h1>{poll.question === "" ? "Empty question" : poll.question}</h1>
+              </Link>
+            );
+          }) :
+          <h5>Oops no polls...</h5>
+        ) :
         <Loader />
       }
     </div>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Loader from "./Loader";
 import { Bar } from "react-chartjs-2";
 
 const Stats = () => {
   const [names, setNames] = useState([]);
   const [counts, setCounts] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -17,6 +19,7 @@ const Stats = () => {
         setNames((prevNames) => [...prevNames, element.name]); // prevState is very important
         setCounts((prevCounts) => [...prevCounts, element.count]);
       });
+      setLoaded(true);
     })
     .catch(err => console.error(err));
   }, [id]);
@@ -39,15 +42,17 @@ const Stats = () => {
   };
 
   return (
-    <div>
-      <Link to={"/poll/" + id}>
-        Back
-      </Link>
-      <Bar
-        data={data}
-        options={options}  
-      />
-    </div>
+    loaded ?
+      <div>
+        <Link to={"/poll/" + id}>
+          Back
+        </Link>
+        <Bar
+          data={data}
+          options={options}  
+        />
+      </div> :
+    <Loader />
   );
 };
 

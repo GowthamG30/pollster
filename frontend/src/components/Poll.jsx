@@ -6,12 +6,16 @@ import Loader from "./Loader";
 const Poll = () => {
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
   const [index, setIndex] = useState(-1);
+  const [loaded, setLoaded] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     axios
     .get("/api/poll/" + id)
-    .then(res => setPoll(res.data))
+    .then(res => {
+      setPoll(res.data);
+      setLoaded(true);
+    })
     .catch(err => console.error(err));
   }, [id]);
 
@@ -47,33 +51,38 @@ const Poll = () => {
   return (
     <div>
       {
-        poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
-        <Loader /> :
-        <div className="poll">
-          <form onSubmit={handleSubmit}>
-            <h4>{poll.question}</h4>
-            {
-              poll.options.map((option, index) => {
-                return (
-                  <label>
-                    <input
-                      type="radio"
-                      value={index}
-                      onChange={onValueChange}
-                      name={id}
-                    />
-                    {option.name}
-                  </label>
-                );
-              })
-            }
-            <button className="button submit" type="submit">Submit</button>
-          </form>
+        loaded ?
+        (
+          poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
+          <h5>Empty poll...</h5> :
+          <div className="poll">
+            <form onSubmit={handleSubmit}>
+              <h4>{poll.question}</h4>
+              {
+                poll.options.map((option, index) => {
+                  return (
+                    <label>
+                      <input
+                        type="radio"
+                        value={index}
+                        onChange={onValueChange}
+                        name={id}
+                      />
+                      {option.name}
+                    </label>
+                  );
+                })
+              }
+              <button className="button submit" type="submit">Submit</button>
+            </form>
 
-          <Link to={"/poll/"+id+"/stats"}>
-            Stats
-          </Link>
-        </div>
+            <Link to={"/poll/"+id+"/stats"}>
+              Stats
+            </Link>
+          </div>
+        )
+        :
+        <Loader />
       }
     </div>
   );
