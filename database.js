@@ -11,8 +11,15 @@ const pollSchema = new mongoose.Schema({
   }]
 });
 
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String
+});
+
 const Poll = mongoose.model("Poll", pollSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = {
-  Poll: Poll
+  Poll: Poll,
+  User: User
 };
