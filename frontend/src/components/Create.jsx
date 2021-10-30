@@ -61,7 +61,7 @@ const Create = () => {
           {
             index ? 
               <button type="button" className="remove" onClick={() => removeOptions(index)}>
-								<span class="material-icons">delete_outline</span>
+								<span className="material-icons">delete_outline</span>
 							</button> 
             : null
           }
