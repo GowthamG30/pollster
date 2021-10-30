@@ -8,7 +8,7 @@ const Body = () => {
         <h1 className="big-heading">Your Vote Matters a lot and a lootttttt!</h1>
       </div>
       <div className="home-right-section">
-        <button className="createButton">
+        <button className="create-button">
           <Link to="/create">
               Create Poll!
           </Link>

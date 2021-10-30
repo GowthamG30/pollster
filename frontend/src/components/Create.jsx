@@ -50,23 +50,26 @@ const Create = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Question</label>
-      <input type="text" name="question" value={question || ""} autocomplete="off" onChange={event => handleQuestion(event)} />
-      {options.map((element, index) => (
-        <div className="form-inline" key={index}>
-          <input type="text" name="option" value={element || ""} autocomplete="off" onChange={event => handleOptions(index, event)} />
+    <form className="create-form" onSubmit={handleSubmit}>
+      <p className="create-label">Question:</p>
+      <input type="text" value={question || ""} placeholder="Enter question..." autocomplete="off" onChange={event => handleQuestion(event)} />
+      
+			<p className="create-label">Options:</p>
+			{options.map((element, index) => (
+        <div className="option" key={index}>
+          <input type="text" value={element || ""} placeholder={"Enter option "+(index+1)} autocomplete="off" onChange={event => handleOptions(index, event)} />
           {
             index ? 
-              <button type="button"  className="button remove" onClick={() => removeOptions(index)}>Remove</button> 
+              <button type="button" className="remove" onClick={() => removeOptions(index)}>
+								<span class="material-icons">delete_outline</span>
+							</button> 
             : null
           }
         </div>
       ))}
-      <div className="button-section">
-          <button className="button add" type="button" onClick={() => addOptions()}>Add</button>
-          <button className="button submit" type="submit">Submit</button>
-      </div>
+
+			<button className="add" type="button" onClick={() => addOptions()}>Add Option</button><br/>
+			<button className="submit" type="submit">Create</button>
     </form>
   );
 };
