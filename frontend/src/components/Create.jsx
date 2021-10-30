@@ -3,13 +3,12 @@ import axios from "axios";
 // import { Redirect } from "react-router";
 
 const Create = () => {
-
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
 
-  const handleChange = (i, event) => {
+  const handleOptions = (index, event) => {
     const newOptions = [...options];
-    newOptions[i] = event.target.value;
+    newOptions[index] = event.target.value;
     setOptions(newOptions);
   }
 
@@ -21,9 +20,9 @@ const Create = () => {
     setOptions([...options, ""]);
   }
   
-  const removeOptions = (i) => {
+  const removeOptions = (index) => {
     const newOptions = [...options];
-    newOptions.splice(i, 1);
+    newOptions.splice(index, 1);
     setOptions(newOptions);
   }
   
@@ -56,8 +55,7 @@ const Create = () => {
       <input type="text" name="question" value={question || ""} autocomplete="off" onChange={event => handleQuestion(event)} />
       {options.map((element, index) => (
         <div className="form-inline" key={index}>
-          
-          <input type="text" name="option" value={element || ""} autocomplete="off" onChange={event => handleChange(index, event)} />
+          <input type="text" name="option" value={element || ""} autocomplete="off" onChange={event => handleOptions(index, event)} />
           {
             index ? 
               <button type="button"  className="button remove" onClick={() => removeOptions(index)}>Remove</button> 
