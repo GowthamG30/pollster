@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import Loader from "./Loader";
 
 const Poll = () => {
@@ -61,7 +61,7 @@ const Poll = () => {
               {
                 poll.options.map((option, index) => {
                   return (
-                    <label>
+                    <label className="option">
                       <input
                         type="radio"
                         value={index}
