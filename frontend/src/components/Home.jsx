@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-const Body = () => {
+const Home = () => {
   return (
     <div className="home-section">
       <div className="home-left-section">
@@ -18,4 +18,4 @@ const Body = () => {
   );
 };
 
-export default Body;
+export default Home;

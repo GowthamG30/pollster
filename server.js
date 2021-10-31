@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
 const { Poll, User } = require("./database.js");
+const bcrypt = require("bcryptjs");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 
@@ -21,6 +22,45 @@ app.use(express.static("public"));
 // app.get("/", (req, res) => {
 //   res.sendFile(path.join(__dirname,"frontend\\build","index.html"));
 // });
+
+app.post("/api/register", async (req, res) => {
+  const salt = await bcrypt.genSalt(10); // check await async and all
+  const hashPwd = await bcrypt.hash(req.body.password, salt);
+
+  const user = new User({
+    username: req.body.username,
+    password: hashPwd
+  });
+
+  user.save();
+});
+
+app.post("/api/login", async (req, res) => {
+  const user = User.findOne({username: req.body.username});
+
+  if(!user) {
+    // user not found
+    return res.status(404).send({
+      message: "user not found"
+    });
+  }
+
+  if(!await bcrypt.compare(req.body.password, user.password)) {
+    return res.status(400).send({
+      message: "invalid credentials"
+    });
+  }
+
+  // const token = jwt.sign({_id: user._id}, "secret")
+  // res.cookie("jwt", token, {
+  //   httpOnly: true,
+  //   maxAge: 24 * 60 * 60 * 1000 // 1 day
+  // });
+
+  res.send({
+    message: "success"
+  });
+});
 
 app.get("/api/polls", (req, res) => {
   Poll.find({},(err, foundPosts) => {
