@@ -243,6 +243,13 @@ a:hover {
   display: flex;
 }
 
+/* Stats */
+.stats {
+	position: relative;
+	height: 75vh;
+	padding: 0 10%;
+}
+
 /* Footer */
 
 footer {
