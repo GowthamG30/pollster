@@ -255,8 +255,15 @@ footer {
 /* Loader */
 
 .loader {
-  border-radius: 50%;
-  border: 3rem solid gray;
-  height: 1rem;
-  width: 1rem;
+	width: 75px;
+	height: 75px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: 50vh auto;
+	background: url(../images/load.gif) no-repeat;
+	opacity: 0.5;
+	background-size: contain;
 }
