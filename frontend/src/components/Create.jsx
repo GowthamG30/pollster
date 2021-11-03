@@ -10,21 +10,21 @@ const Create = () => {
     const newOptions = [...options];
     newOptions[index] = event.target.value;
     setOptions(newOptions);
-  }
+  };
 
-  const handleQuestion= (event) => {
+  const handleQuestion = (event) => {
     setQuestion(event.target.value);
-  }
+  };
   
   const addOptions = () => {
     setOptions([...options, ""]);
-  }
+  };
   
   const removeOptions = (index) => {
     const newOptions = [...options];
     newOptions.splice(index, 1);
     setOptions(newOptions);
-  }
+  };
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -47,7 +47,7 @@ const Create = () => {
     // <Redirect
     //   to="/polls"
     // />
-  }
+  };
 
   return (
     <form className="create-form" onSubmit={handleSubmit}>

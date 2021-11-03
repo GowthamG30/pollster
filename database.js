@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
 
-mongoose.connect(process.env.MONGOURI, {useNewUrlParser: true, useUnifiedTopology: true}); // check these later
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}); // check these later
 
 const pollSchema = new mongoose.Schema({
   question: String,
@@ -13,7 +13,8 @@ const pollSchema = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
   username: String,
-  password: String
+  password: String,
+  polls: [pollSchema]
 });
 
 const Poll = mongoose.model("Poll", pollSchema);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "./Loader";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 
 const Stats = () => {
 	const [question, setQuestion] = useState("");
@@ -79,7 +79,7 @@ const Stats = () => {
           Back
         </Link>
 				<div className="stats">
-					<Bar
+					<Pie
 						data={data}
 						options={options}
 					/>

@@ -44,7 +44,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to={1 ? "/home" : "/"} className="logo">
+      <Link to={0 ? "/home" : "/"} className="logo">
         Pollster
 			</Link>
 
