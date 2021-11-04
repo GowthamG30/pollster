@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router";
 import axios from "axios";
-// import { Redirect } from "react-router";
 
 const Create = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
+	const [redirect, setRedirect] = useState(false);
 
   const handleOptions = (index, event) => {
     const newOptions = [...options];
@@ -39,25 +40,27 @@ const Create = () => {
         "headers": {
           "content-type": "application/json",
         },})
-      .then(res => console.log(res))
+      .then(res => {
+				console.log(res)
+				setRedirect(true);
+			})
       .catch(err => console.error(err));
 
-    window.location.href = "../polls";
-
-    // <Redirect
-    //   to="/polls"
-    // />
   };
+
+	if(redirect) {
+    return <Redirect to="/polls"/>;
+  }
 
   return (
     <form className="create-form" onSubmit={handleSubmit}>
       <p className="create-label">Question:</p>
-      <input type="text" value={question || ""} placeholder="Enter question..." autocomplete="off" onChange={event => handleQuestion(event)} />
+      <input type="text" value={question || ""} placeholder="Enter question..." autoComplete="off" onChange={event => handleQuestion(event)} />
       
 			<p className="create-label">Options:</p>
 			{options.map((element, index) => (
         <div className="option" key={index}>
-          <input type="text" value={element || ""} placeholder={"Enter option "+(index+1)} autocomplete="off" onChange={event => handleOptions(index, event)} />
+          <input type="text" value={element || ""} placeholder={"Enter option "+(index+1)} autoComplete="off" onChange={event => handleOptions(index, event)} />
           {
             index ? 
               <button type="button" className="remove" onClick={() => removeOptions(index)}>

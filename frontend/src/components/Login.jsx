@@ -16,7 +16,7 @@ const Login = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefauit();
+    event.preventDefault();
 
     const params = JSON.stringify({
       "username": username,
@@ -29,15 +29,15 @@ const Login = () => {
           "content-type": "application/json",
         },})
       .then(res => {
-        localStorage.setItem("username", res.data.username);  
-        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("accessToken", res.data.accessToken);
+				setRedirect(true);
       })
       .catch(err => console.error(err));
   };
 
-  // if(redirect) {
-  //   return <Redirect to="/home"/>;
-  // }
+  if(redirect) {
+    return <Redirect to="/home"/>;
+  }
 
   // write class names in css
   return (
@@ -46,7 +46,7 @@ const Login = () => {
       <input type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
       
 			<p className="login-label">Password:</p>
-      <input type="text" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
+      <input type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
 
 			<button className="login" type="submit">Login</button>
     </form>

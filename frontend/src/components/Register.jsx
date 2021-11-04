@@ -31,13 +31,14 @@ const Register = () => {
         },})
       .then(res => {
         console.log(res);
+        setRedirect(true);
       })
       .catch(err => console.error(err));
   };
 
-  // if(redirect) {
-  //   return <Redirect to="/login"/>;
-  // }
+  if(redirect) {
+    return <Redirect to="/login"/>;
+  }
 
   // write class names in css
   return (

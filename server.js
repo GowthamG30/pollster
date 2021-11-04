@@ -5,7 +5,7 @@ const { Poll, User } = require("./database.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const port = process.env.PORT || 5000;
-const saltRounds = process.env.SALT_ROUNDS || 10;
+const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
 require("dotenv").config();
 
 const app = express();
@@ -22,25 +22,41 @@ app.use(express.static("public"));
 //   res.sendFile(path.join(__dirname,"frontend\\build","index.html"));
 // });
 
-const generateToken = (tokenData) => {
-  const token = jwt.sign({ data: tokenData }, process.env.JWT_SECRET_KEY);
-  // expiresIn: tokenConfig.TOKEN_LIFE,
+const generateAccessToken = (data) => {
+  const token = jwt.sign(data, process.env.JWT_SECRET_KEY, {expiresIn: process.env.TOKEN_LIFE});
   return token;
 };
 
-const verifyToken = (token) => {
-  try {
-    const decodedData = jwt.verify(token, envConfig.JWT_SECRET_KEY);
-    return decodedData;
-  } catch (err) {
-    if (err.name === "TokenExpiredError") {
-      err.message = "User Session Expired";
-      err.status = 401;
-      throw err;
-    }
-    throw err;
-  }
-};
+// const verifyToken = (token) => {
+//   try {
+//     const decodedData = jwt.verify(token, process.env.JWT_SECRET_KEY);
+//     return decodedData;
+//   } catch (err) {
+//     if (err.name === "TokenExpiredError") {
+//       err.message = "User Session Expired";
+//       err.status = 401;
+//       throw err;
+//     }
+//     throw err;
+//   }
+// };
+
+app.get("/api/verify", authenticateToken, (req, res) => {
+	res.end();
+});
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['Authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+    console.log(err);
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  })
+}
 
 app.post("/api/register", (req, res) => {
   // check if username already present
@@ -57,8 +73,10 @@ app.post("/api/register", (req, res) => {
       }
       else {
         console.log("success");
+				res.end();
       }
     });
+
   });
 });
 
@@ -73,9 +91,9 @@ app.post("/api/login", (req, res) => {
     else {
       if(foundUser) {
         bcrypt.compare(password, foundUser.password, (error, result) => {
-          if(result) {
-            const token = generateToken({id: result.username});
-            res.send({username: result.username, token: token});
+          if(result) {	// Password matched
+            const accessToken = generateAccessToken({name: username});
+            res.send({username: username, accessToken: accessToken});
           }
           else {
             res.sendStatus(401);
@@ -104,7 +122,15 @@ app.post("/api/create", (req, res) => {
     question: req.body.question,
     options: options
   });
-  data.save();
+
+  data.save((err, result) => {
+		if (err){
+			console.log(err);
+		}
+		else{
+			res.end();
+		}
+	});
 });
 
 app.get("/api/poll/:id", (req, res) => {
@@ -138,4 +164,3 @@ app.listen(port, () => {
 // server.listen(port, () => {
 //   console.log("Server running on port " + port);
 // });
-
