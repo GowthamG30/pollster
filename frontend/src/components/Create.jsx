@@ -9,16 +9,16 @@ const Create = () => {
   const [newPath, setNewPath] = useState("/");
 
 	useEffect(() => {
+		let requestOptions = {headers: {}}
+		
     let accessToken = localStorage.getItem("accessToken");
-    let headers = null;
-
     if(accessToken) {
-      headers = {headers: {authorization: `Bearer ${accessToken}`}};
-      JSON.stringify(headers);
+      requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
     }
+		JSON.stringify(requestOptions);
 
     axios
-      .get("/api/verify", headers)
+      .get("/api/verify", requestOptions)
       .then()
       .catch(err => {
         // console.error("home err: " + err);
@@ -49,17 +49,24 @@ const Create = () => {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+			
     const params = JSON.stringify({
-      "question": question,
+			"question": question,
       "options": options
     });
+
+		
+    let requestOptions = {headers: {}};
+		requestOptions.headers["content-type"] = "application/json";
+		
+		let accessToken = localStorage.getItem("accessToken");
+    if(accessToken) {
+			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
+    }
+		JSON.stringify(requestOptions);
     
     axios
-      .post("/api/create", params, {
-        "headers": {
-          "content-type": "application/json",
-        },})
+      .post("/api/create", params, requestOptions)
       .then(res => {
 				// console.log(res)
         setNewPath("/polls");
@@ -73,7 +80,6 @@ const Create = () => {
   };
 
 	if(redirect) {
-		console.log(newPath);
     return <Redirect to={newPath}/>;
   }
 
