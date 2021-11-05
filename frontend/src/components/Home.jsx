@@ -1,22 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const [redirect, setRedirect] = useState(false);
+
 	useEffect(() => {
-		const params = 
+    let accessToken = localStorage.getItem("accessToken");
+    let headers = null;
+
+    if(accessToken) {
+      headers = {headers: {authorization: `Bearer ${accessToken}`}};
+      JSON.stringify(headers);
+    }
 
     axios
-    .get("/api/verify", {}, {
-			"headers": {
-				"Authorization": "Bearer " + localStorage.getItem("accessToken")
-			}
-		})
-    .then(res => {
-      
-    })
-    .catch(err => console.error(err));
+      .get("/api/verify", headers)
+      .then()
+      .catch(err => {
+        // console.error("home err: " + err);
+        setRedirect(true);
+      });
   }, []);
+
+  if(redirect) {
+    return <Redirect to="/login"/>;
+  }
 
 	return (
     <div className="home-section">

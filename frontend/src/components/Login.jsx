@@ -32,7 +32,7 @@ const Login = () => {
         localStorage.setItem("accessToken", res.data.accessToken);
 				setRedirect(true);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error("login err: " + err));
   };
 
   if(redirect) {

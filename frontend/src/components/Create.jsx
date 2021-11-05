@@ -6,6 +6,7 @@ const Create = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
 	const [redirect, setRedirect] = useState(false);
+  let newPath = "/";
 
   const handleOptions = (index, event) => {
     const newOptions = [...options];
@@ -41,15 +42,19 @@ const Create = () => {
           "content-type": "application/json",
         },})
       .then(res => {
-				console.log(res)
+				// console.log(res)
+        newPath = newPath + "polls";
 				setRedirect(true);
 			})
-      .catch(err => console.error(err));
-
+      .catch(err => {
+        // console.error(err);
+        newPath = newPath + "login";
+        setRedirect(true);
+      });
   };
 
 	if(redirect) {
-    return <Redirect to="/polls"/>;
+    return <Redirect to={newPath}/>;
   }
 
   return (
