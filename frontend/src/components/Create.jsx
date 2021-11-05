@@ -7,6 +7,7 @@ const Create = () => {
   const [options, setOptions] = useState([""]);
 	const [redirect, setRedirect] = useState(false);
   const [newPath, setNewPath] = useState("/");
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		let requestOptions = {headers: {}}
@@ -49,6 +50,20 @@ const Create = () => {
   
   const handleSubmit = (event) => {
     event.preventDefault();
+		let errorBuffer = "";
+
+    // Validation
+		if(!question)
+			errorBuffer += "Question should not be left empty\n";
+		
+		if(options.includes(""))
+			errorBuffer += "No option should be left empty\n";
+
+		if(errorBuffer) {
+			setError(errorBuffer);			
+			console.log("Error in validation" + errorBuffer);
+			return;
+		}
 			
     const params = JSON.stringify({
 			"question": question,
@@ -103,6 +118,7 @@ const Create = () => {
       ))}
 
 			<button className="add" type="button" onClick={() => addOptions()}>Add Option</button><br/>
+			<span className="error">{error}</span>
 			<button className="submit" type="submit">Create</button>
     </form>
   );
