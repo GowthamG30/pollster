@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import axios from "axios";
 
@@ -6,7 +6,26 @@ const Create = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
 	const [redirect, setRedirect] = useState(false);
-  let newPath = "/";
+  const [newPath, setNewPath] = useState("/");
+
+	useEffect(() => {
+    let accessToken = localStorage.getItem("accessToken");
+    let headers = null;
+
+    if(accessToken) {
+      headers = {headers: {authorization: `Bearer ${accessToken}`}};
+      JSON.stringify(headers);
+    }
+
+    axios
+      .get("/api/verify", headers)
+      .then()
+      .catch(err => {
+        // console.error("home err: " + err);
+				setNewPath("/login");
+        setRedirect(true);
+      });
+  }, []);
 
   const handleOptions = (index, event) => {
     const newOptions = [...options];
@@ -43,17 +62,18 @@ const Create = () => {
         },})
       .then(res => {
 				// console.log(res)
-        newPath = newPath + "polls";
+        setNewPath("/polls");
 				setRedirect(true);
 			})
       .catch(err => {
         // console.error(err);
-        newPath = newPath + "login";
+        setNewPath("/login");
         setRedirect(true);
       });
   };
 
 	if(redirect) {
+		console.log(newPath);
     return <Redirect to={newPath}/>;
   }
 

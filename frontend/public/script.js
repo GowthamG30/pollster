@@ -4,5 +4,5 @@ const navList = document.querySelector('.nav-list');
 // console.log(navList);
 
 toggleButton.addEventListener('click', () => {
-	navList.classList.toggle('active');
+	navList.classList.toggle('navbar-toggle');
 });

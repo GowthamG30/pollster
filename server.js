@@ -115,7 +115,7 @@ app.get("/api/polls", (req, res) => {
   });
 });
 
-app.post("/api/create", (req, res) => {
+app.post("/api/create", authenticateToken, (req, res) => {
   const options = [];
   req.body.options.map((element) => {
     options.push({name: element, count: 0});

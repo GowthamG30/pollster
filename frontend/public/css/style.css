@@ -78,7 +78,8 @@ a:hover {
   border-radius: 2rem;
 }
 
-.nav-item a:hover {
+.nav-item a:hover,
+.nav-item .active {
   background-color: white;
   color: var(--blue);
 }
@@ -121,7 +122,7 @@ a:hover {
     border-radius: 0;
   }
 
-  .active {
+  .navbar-toggle {
     display: flex;
   }
 }

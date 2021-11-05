@@ -33,11 +33,9 @@ const Home = () => {
         <h1 className="big-heading">Your Vote Matters a lot and a lootttttt!</h1>
       </div>
       <div className="home-right-section">
-        <button className="create-button">
-          <Link to="/create">
-              Create Poll!
-          </Link>
-        </button>
+				<Link to="/create" className="create-button">
+						Create Poll!
+				</Link>
       </div>
     </div>
   );
