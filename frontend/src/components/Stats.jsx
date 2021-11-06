@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "./Loader";
 import { Pie } from "react-chartjs-2";
+import Navbar from "./Navbar";
+import Verify from "./Verify";
 
 const Stats = () => {
 	const [question, setQuestion] = useState("");
@@ -73,19 +75,25 @@ const Stats = () => {
   };
 
   return (
-    loaded ?
-      <>
-        <Link to={"/poll/" + id}>
-          Back
-        </Link>
-				<div className="stats">
-					<Pie
-						data={data}
-						options={options}
-					/>
-				</div>
-			</> :
-    <Loader />
+    <>
+      <Navbar />
+      <Verify />
+      {
+        loaded ?
+          <>
+            <Link to={"/poll/" + id}>
+              Back
+            </Link>
+            <div className="stats">
+              <Pie
+                data={data}
+                options={options}
+              />
+            </div>
+          </> :
+        <Loader />
+      }
+    </>
   );
 };
 

@@ -1,10 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
 
 const Navbar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentPath, setCurrentPath] = useState("/");
+  const [redirect, setRedirect] = useState(false);
+  const [newPath, setNewPath] = useState("/");
+
+	useEffect(() => {
+    let accessToken = localStorage.getItem("accessToken");
+    let requestOptions = null;
+
+    if(accessToken) {
+      requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
+      JSON.stringify(requestOptions);
+    }
+
+    // Paths for which authentication is NOT required
+    const excludePaths = ["/", "/login", "/register", "/about"];
+    const currentPath = window.location.pathname;
+
+    if(!excludePaths.includes(currentPath)) {
+      axios
+      .get("/api/verify", requestOptions)
+      .then(res => setIsAuthenticated(true))
+      .catch(err => {
+        // console.error(err)
+        setNewPath("/login");
+        setRedirect(true);
+      });
+    }
+  }, []);
+
+  if(redirect) {
+    return <Redirect to={newPath} />;
+  }
+
   let display;
 
-  if(0) { // if user is authenticated
+  if(isAuthenticated) { // if user is authenticated
     display = (
       <ul className="nav-list">
 				<li className="nav-item">
@@ -38,13 +73,18 @@ const Navbar = () => {
 						Register
 					</Link>
 				</li>
+        <li className="nav-item">
+					<Link to="/about">
+						About
+					</Link>
+				</li>
 			</ul>
     )
   }
 
   return (
     <nav className="navbar">
-      <Link to={0 ? "/home" : "/"} className="logo">
+      <Link to={isAuthenticated ? "/home" : "/"} className="logo">
         Pollster
 			</Link>
 
@@ -55,5 +95,6 @@ const Navbar = () => {
     </nav>
   );
 };
+
 
 export default Navbar;

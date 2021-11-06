@@ -5,7 +5,6 @@ import Dashboard from "./Dashboard";
 import Footer from "./Footer";
 import Home from "./Home";
 import Login from "./Login";
-import Navbar from "./Navbar";
 import Poll from "./Poll";
 import Polls from "./Polls";
 import Register from "./Register";
@@ -15,7 +14,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 const App = () => {
   return (
     <Router>
-      <Navbar />
       <Switch>
         <Route path="/" exact component={Dashboard} />
         <Route path="/home" exact component={Home} />

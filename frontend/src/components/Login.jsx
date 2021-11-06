@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router";
 import axios from "axios";
+import Navbar from "./Navbar";
+import Verify from "./Verify";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -36,20 +38,25 @@ const Login = () => {
   };
 
   if(redirect) {
-    return <Redirect to="/home"/>;
+    // return <Redirect to="/home"/>;
+    window.location.href = "/home";
   }
 
   // write class names in css
   return (
-    <form className="login-form" onSubmit={handleSubmit}>
-      <p className="login-label">Username:</p>
-      <input type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
-      
-			<p className="login-label">Password:</p>
-      <input type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
+    <>
+      <Navbar />
+      <Verify />
+      <form className="login-form" onSubmit={handleSubmit}>
+        <p className="login-label">Username:</p>
+        <input type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
+        
+        <p className="login-label">Password:</p>
+        <input type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
 
-			<button className="login" type="submit">Login</button>
-    </form>
+        <button className="login" type="submit">Login</button>
+      </form>
+    </>
   );
 };
 

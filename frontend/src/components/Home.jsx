@@ -1,43 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
-import axios from "axios";
+import React from "react";
+import { Link } from "react-router-dom";
+import Navbar from "./Navbar";
+import Verify from "./Verify";
 
 const Home = () => {
-  const [redirect, setRedirect] = useState(false);
-
-	useEffect(() => {
-    let accessToken = localStorage.getItem("accessToken");
-    let headers = null;
-
-    if(accessToken) {
-      headers = {headers: {authorization: `Bearer ${accessToken}`}};
-      JSON.stringify(headers);
-    }
-
-    axios
-      .get("/api/verify", headers)
-      .then()
-      .catch(err => {
-        // console.error("home err: " + err);
-        setRedirect(true);
-      });
-  }, []);
-
-  if(redirect) {
-    return <Redirect to="/login"/>;
-  }
-
 	return (
-    <div className="home-section">
-      <div className="home-left-section">
-        <h1 className="big-heading">Your Vote Matters a lot and a lootttttt!</h1>
+    <>
+      <Navbar />
+      <Verify />
+      <div className="home-section">
+        <div className="home-left-section">
+          <h1 className="big-heading">Your Vote Matters a lot and a lootttttt!</h1>
+        </div>
+        <div className="home-right-section">
+          <Link to="/create" className="create-button">
+              Create Poll!
+          </Link>
+        </div>
       </div>
-      <div className="home-right-section">
-				<Link to="/create" className="create-button">
-						Create Poll!
-				</Link>
-      </div>
-    </div>
+    </>
   );
 };
 

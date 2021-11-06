@@ -1,11 +1,16 @@
 import React from "react";
+import Navbar from "./Navbar";
+import Verify from "./Verify";
 
 const About = () => {
-
   return (
-    <div>
-      Created by 2 CSE undergraduates of VNIT, Prabhav and Gowtham
-    </div>
+    <>
+      <Navbar />
+      <Verify />
+      <div>
+        Created by 2 CSE undergraduates of VNIT, Prabhav and Gowtham
+      </div>
+    </>
   );
 };
 
