@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import Nav from "./Nav";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentPath, setCurrentPath] = useState("/");
   const [redirect, setRedirect] = useState(false);
   const [newPath, setNewPath] = useState("/");
+  const [loaded, setLoaded] = useState(false);
+  // Paths for which authentication is NOT required
+  const excludePaths = ["/", "/login", "/register", "/about"];
 
 	useEffect(() => {
     let accessToken = localStorage.getItem("accessToken");
@@ -17,25 +21,23 @@ const Navbar = () => {
       JSON.stringify(requestOptions);
     }
 
-    // Paths for which authentication is NOT required
-    const excludePaths = ["/", "/login", "/register", "/about"];
     const currentPath = window.location.pathname;
 
     if(!excludePaths.includes(currentPath)) {
       axios
       .get("/api/verify", requestOptions)
-      .then(res => setIsAuthenticated(true))
+      .then(res => {
+        setLoaded(true);
+        setIsAuthenticated(true);
+      })
       .catch(err => {
         // console.error(err)
         setNewPath("/login");
+        setLoaded(true);
         setRedirect(true);
       });
     }
   }, []);
-
-  if(redirect) {
-    return <Redirect to={newPath} />;
-  }
 
   let display;
 
@@ -82,17 +84,23 @@ const Navbar = () => {
     )
   }
 
+  if(redirect) {
+    return <Redirect to={newPath} />;
+  }
+
   return (
-    <nav className="navbar">
-      <Link to={isAuthenticated ? "/home" : "/"} className="logo">
-        Pollster
-			</Link>
+    loaded || excludePaths.includes(window.location.pathname) ? // except about, all good ig 
+      <nav className="navbar">
+        <Link to={isAuthenticated ? "/home" : "/"} className="logo">
+          Pollster
+        </Link>
 
-			{/* Hamburger */}
-			<span className="material-icons hamburger">menu</span>
+        {/* Hamburger */}
+        <span className="material-icons hamburger">menu</span>
 
-			{display /* menu */}
-    </nav>
+        {display /* menu */}
+      </nav> :
+    <Nav />
   );
 };
 

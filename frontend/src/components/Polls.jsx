@@ -8,8 +8,14 @@ import Verify from "./Verify";
 const Polls = () => {
   const [polls, setPolls] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [myPolls, setMyPolls] = useState([]);
+  const [allPolls, setAllPolls] = useState([]);
 
   useEffect(() => {
+    // const params = JSON.stringify({
+    //   "username": username ////////////
+    // });
+
     axios
     .get("/api/polls")
     .then(res => {

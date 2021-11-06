@@ -9,7 +9,7 @@ const Poll = () => {
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
   const [index, setIndex] = useState(-1);
   const [loaded, setLoaded] = useState(false);
-	const [error, setError] = useState("");
+  const [error, setError] = useState("");
   const { id } = useParams();
 
   useEffect(() => {

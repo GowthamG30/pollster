@@ -45,13 +45,12 @@ const Create = () => {
 			console.log("Error in validation" + errorBuffer);
 			return;
 		}
-			
+
     const params = JSON.stringify({
 			"question": question,
       "options": options
     });
 
-		
     let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
 		

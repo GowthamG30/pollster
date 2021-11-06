@@ -113,7 +113,15 @@ app.get("/api/polls", (req, res) => {
   Poll.find({},(err, foundPosts) => {
     res.json(foundPosts);
   });
+
+  // let data = [];
+  // User.find({}, (err, foundUsers) => {
+  //   console.log(foundUsers);
+  //   // data.push({user: foundUsers, polls: foundUsers.polls});
+  //   // res.json(foundPosts);
+  // });
 });
+
 
 app.post("/api/create", (req, res) => {
   const options = [];
