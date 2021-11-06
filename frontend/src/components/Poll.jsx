@@ -9,6 +9,7 @@ const Poll = () => {
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
   const [index, setIndex] = useState(-1);
   const [loaded, setLoaded] = useState(false);
+	const [error, setError] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const Poll = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+		let errorBuffer = "";
 
     if(index !== -1) {
       const params = JSON.stringify({
@@ -42,9 +44,10 @@ const Poll = () => {
       // or use redirect
     }
     else {
-      // tell user to select something
+			errorBuffer += "Select atleast one option\n"
+      setError(errorBuffer);
     }
-  };
+  }
 
   const onValueChange = (event) => {
     setIndex(event.target.value);
@@ -80,6 +83,7 @@ const Poll = () => {
                   );
                 })
               }
+              <span className="error">{error}</span>
               <button className="button submit" type="submit">Submit</button>
             </form>
           </div>

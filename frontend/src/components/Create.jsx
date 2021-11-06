@@ -7,6 +7,7 @@ import Verify from "./Verify";
 const Create = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
+  const [error, setError] = useState("");
 
   const handleOptions = (index, event) => {
     const newOptions = [...options];
@@ -30,17 +31,38 @@ const Create = () => {
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+		let errorBuffer = "";
+
+    // Validation
+		if(!question)
+			errorBuffer += "Question should not be left empty\n";
+		
+		if(options.includes(""))
+			errorBuffer += "No option should be left empty\n";
+
+		if(errorBuffer) {
+			setError(errorBuffer);			
+			console.log("Error in validation" + errorBuffer);
+			return;
+		}
+			
     const params = JSON.stringify({
-      "question": question,
+			"question": question,
       "options": options
     });
+
+		
+    let requestOptions = {headers: {}};
+		requestOptions.headers["content-type"] = "application/json";
+		
+		let accessToken = localStorage.getItem("accessToken");
+    if(accessToken) {
+			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
+    }
+		JSON.stringify(requestOptions);
     
     axios
-      .post("/api/create", params, {
-        "headers": {
-          "content-type": "application/json",
-        },})
+      .post("/api/create", params, requestOptions)
       .then(res => {
 				// console.log(res)
 			})
@@ -72,6 +94,7 @@ const Create = () => {
         ))}
 
         <button className="add" type="button" onClick={() => addOptions()}>Add Option</button><br/>
+        <span className="error">{error}</span>
         <button className="submit" type="submit">Create</button>
       </form>
     </>
