@@ -4,7 +4,6 @@ import axios from "axios";
 import Loader from "./Loader";
 import { Bar, Pie } from "react-chartjs-2";
 import Navbar from "./Navbar";
-import Verify from "./Verify";
 
 const Stats = () => {
 	const [question, setQuestion] = useState("");
@@ -109,7 +108,6 @@ const Stats = () => {
   return (
     <>
       <Navbar />
-      <Verify />
       <button onClick={() => (setTypeOfChart(prev => (prev+1)%2))}>Type of Chart</button>
       {
         loaded ?

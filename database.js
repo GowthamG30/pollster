@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
 
+//connct to mongodb atlas
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}); // check these later
 
 const pollSchema = new mongoose.Schema({
@@ -9,13 +10,13 @@ const pollSchema = new mongoose.Schema({
     name: String,
     count: Number
   }],
+  author: String,
   voters: [String]
 });
 
 const userSchema = new mongoose.Schema({
   username: String,
-  password: String,
-  polls: [pollSchema]
+  password: String
 });
 
 const Poll = mongoose.model("Poll", pollSchema);

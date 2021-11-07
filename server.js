@@ -1,9 +1,9 @@
-const express = require("express");
-const path = require("path");
-const cors = require("cors");
-const { Poll, User } = require("./database.js");
 const bcrypt = require("bcryptjs");
+const cors = require("cors");
+const express = require("express");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const { Poll, User } = require("./database.js");
 const port = process.env.PORT || 5000;
 const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
 require("dotenv").config();
@@ -27,24 +27,11 @@ const generateAccessToken = (data) => {
   return token;
 };
 
-// const verifyToken = (token) => {
-//   try {
-//     const decodedData = jwt.verify(token, process.env.JWT_SECRET_KEY);
-//     return decodedData;
-//   } catch (err) {
-//     if (err.name === "TokenExpiredError") {
-//       err.message = "User Session Expired";
-//       err.status = 401;
-//       throw err;
-//     }
-//     throw err;
-//   }
-// };
-
+// Authentication middleware
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) {
+  if(token == null) {
     return res.sendStatus(401);
   }
 
@@ -58,18 +45,19 @@ const authenticateToken = (req, res, next) => {
   })
 };
 
+// Verify authentication in routes
 app.get("/api/verify", authenticateToken, (req, res) => {
 	res.send(req.currentUserName);
 });
 
-app.post("/api/register", (req, res) => { //////////////////// check
+app.post("/api/register", (req, res) => {
   // Check if username already exists
   User.findOne({username: req.body.username}, (err, user) => {
     if(user) {
       res.status(400).json({
         message: "Username already exists"
       });
-      // deprecated below one
+      // deprecated - below one
       // res.send(400, {
       //   message: "Username already exists"
       // });
@@ -96,6 +84,7 @@ app.post("/api/register", (req, res) => { //////////////////// check
   });
 });
 
+// Login
 app.post("/api/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -123,86 +112,82 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-app.get("/api/polls", authenticateToken, (req, res) => {
-  const currentUserName = req.currentUserName;
-  const data = [];
-  User.find({}, (err, foundUsers) => {
-    if(err) {
-      console.log(err);
-    }
-    else {
-      foundUsers.forEach(user => {
-        data.push({
-          username: user.username,
-          polls: user.polls
-        });
-      });
-      res.json({
-        currentUserName: currentUserName,
-        users: data
-      });
-    }
-  });
-});
-
-
+// Create a poll
 app.post("/api/create", authenticateToken, (req, res) => {
   const currentUserName = req.currentUserName;
   const options = [];
   req.body.options.map((element) => {
     options.push({name: element, count: 0});
   });
-  const data = new Poll({
-    question: req.body.question,
-    options: options
-  });
 
-  User.findOneAndUpdate({username: currentUserName}, {$push: {polls: data}}, (err, foundUser) => {
+  const newPoll = new Poll({
+    question: req.body.question,
+    options: options,
+    author: currentUserName,
+    voters: [],
+  });
+  
+  newPoll.save();
+  res.end();
+});
+
+// Get all polls
+app.get("/api/polls", authenticateToken, (req, res) => {
+  const currentUserName = req.currentUserName;
+  Poll.find({}, (err, foundPolls) => {
     if(err) {
       console.log(err);
     }
     else {
-      data.save((err) => {
-        if(err) {
-          console.log(err);
-        }
-        else {
-          // console.log("success");
-          res.end();
-        }
+      res.json({
+        currentUserName: currentUserName,
+        polls: foundPolls
       });
     }
   });
 });
 
-app.get("/api/poll/:id", authenticateToken, (req, res) => {
-  const currentUserName = req.currentUserName;
-  const id = req.params.id;
-  Poll.findById(id, (err, result) => {
-    if(err) {
-      throw err;
-    }
-    res.send({
-      currentUserName: currentUserName,
-      poll: result
+app.route("/api/poll/:id")
+  // Get a poll
+  .get(authenticateToken, (req, res) => {
+    const currentUserName = req.currentUserName;
+    const id = req.params.id;
+    Poll.findById(id, (err, foundPoll) => {
+      if(err) {
+        console.log(err);
+      }
+      else {
+        res.json({
+          currentUserName: currentUserName,
+          poll: foundPoll
+        });
+      }
+    });
+  })
+  // Delete a poll
+  .delete(authenticateToken, (req, res) => {
+    const id = req.params.id;
+    Poll.deleteOne({_id: id}, (err, deletedPoll) => {
+      if(err) console.log(err);
+      res.end();
     });
   });
-});
 
+// Vote a poll
 app.post("/api/vote/:id", authenticateToken, (req, res) => {
   const currentUserName = req.currentUserName;
-  const id = req.params.id; // body better?
+  const id = req.params.id;
   const poll = req.body.poll;
   const index = req.body.index;
   const newOptions = poll.options;
   newOptions[index].count++;
-  Poll.findOneAndUpdate({_id: id}, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
-    if(err) {
-      console.log(err);
-    }
+  Poll.findByIdAndUpdate(id, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
+    if(err) console.log(err);
+    res.end();
   });
 });
 
+// Listen to a specific port
 app.listen(port, () => {
   console.log("Server running on port " + port);
 });

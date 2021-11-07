@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router";
 import axios from "axios";
 import Navbar from "./Navbar";
-import Verify from "./Verify";
 
 const Create = () => {
   const [question, setQuestion] = useState("");
@@ -79,7 +78,6 @@ const Create = () => {
   return (
     <>
       <Navbar />
-      <Verify />
       <form className="create-form" onSubmit={handleSubmit}>
         <p className="create-label">Question:</p>
         <input type="text" value={question || ""} placeholder="Enter question..." autoComplete="off" onChange={event => handleQuestion(event)} />

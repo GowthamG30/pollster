@@ -3,10 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
-import Verify from "./Verify";
 
 const Poll = () => {
-  const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], voters: []});
+  const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], author: "", voters: []});
   const [index, setIndex] = useState(-1);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
@@ -62,7 +61,7 @@ const Poll = () => {
 
         setTimeout(() => {
           window.location.href = "../poll/" + id + "/stats"; // path check and later use redirect
-        }, 10000);
+        }, 1000);
         
       }
       else {
@@ -83,7 +82,6 @@ const Poll = () => {
   return (
     <>
       <Navbar />
-      <Verify />
       {
         loaded ?
         (
