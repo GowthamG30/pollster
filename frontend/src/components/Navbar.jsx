@@ -10,8 +10,8 @@ const Navbar = () => {
   const [newPath, setNewPath] = useState("/");
   const [loaded, setLoaded] = useState(false);
   const [currentUserName, setCurrentUser] = useState("");
-  // Paths for which authentication is NOT required
-  const excludePaths = ["/", "/login", "/register", "/about"];
+  const excludePaths = ["/", "/login", "/register"];
+  const commonPaths = ["/about"];
 
 	useEffect(() => {
     let accessToken = localStorage.getItem("accessToken");
@@ -26,18 +26,24 @@ const Navbar = () => {
 
     if(!excludePaths.includes(currentPath)) {
       axios
-      .get("/api/verify", requestOptions)
-      .then(res => {
-        setCurrentUser(res.data);
-        setLoaded(true);
-        setIsAuthenticated(true);
-      })
-      .catch(err => {
-        // console.error(err)
-        setNewPath("/login");
-        setLoaded(true);
-        setRedirect(true);
-      });
+        .get("/api/verify", requestOptions)
+        .then(res => {
+          setCurrentUser(res.data);
+          setLoaded(true);
+          setIsAuthenticated(true);
+        })
+        .catch(err => {
+          // console.error("Navbar err:" + err);
+					if(!commonPaths.includes(currentPath)) {
+						setNewPath("/login");
+						setRedirect(true);
+					}
+          setLoaded(true);
+        });
+    }
+    else if(commonPaths.includes(currentPath)) {
+      setIsAuthenticated(true);
+      setLoaded(true);
     }
   }, []);
 
@@ -60,7 +66,7 @@ const Navbar = () => {
 						{currentUserName}
 				</li>
         <li className="nav-item">
-					<Link to="/logout">
+					<Link to="/" onClick={() => {localStorage.removeItem("accessToken");}}>
 						Logout
 					</Link>
 				</li>
@@ -97,7 +103,7 @@ const Navbar = () => {
     loaded || excludePaths.includes(window.location.pathname) ? // except about, all good ig 
       <nav className="navbar">
         <Link to={isAuthenticated ? "/home" : "/"} className="logo">
-          Pollster
+          Pollster 
         </Link>
 
         {/* Hamburger */}
