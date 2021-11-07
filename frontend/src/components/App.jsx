@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import Footer from "./Footer";
 import Home from "./Home";
 import Login from "./Login";
+import NotFound from "./NotFound";
 import Poll from "./Poll";
 import Polls from "./Polls";
 import Register from "./Register";
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/create" exact component={Create} />
         <Route path="/poll/:id" exact component={Poll} />
         <Route path="/poll/:id/stats" exact component={Stats} />
+				<Route component={NotFound}/>
       </Switch>
       <Footer />
     </Router>

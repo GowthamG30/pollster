@@ -62,58 +62,38 @@ app.get("/api/verify", authenticateToken, (req, res) => {
 	res.send(req.currentUserName);
 });
 
-app.post("/api/register", (req, res) => { //////////////////////////////////////////////////////////////////
-  // check if username already present
-  // User.findOne({
-  //   where: {
-  //     username: req.body.username
-  //   }
-  // }).then(user => {
-  //   if (user) {
-  //     res.status(400).json({
-  //       message: "Username already exists"
-  //     });
-  //   } else {
-  //     // hash password
-        
-  //   bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
-  //     const user = new User({
-  //       username: req.body.username,
-  //       password: hashPassword
-  //     });
-
-  //     user.save(function (err) {
-  //       if(err) {
-  //         console.log(err);
-  //       }
-  //       else {
-  //         // console.log("success");
-  //         res.end();
-  //       }
-  //     });
-
-  //   });
-  //   }
-
-
-
-    bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
-      const user = new User({
-        username: req.body.username,
-        password: hashPassword
+app.post("/api/register", (req, res) => { //////////////////// check
+  // Check if username already exists
+  User.findOne({username: req.body.username}, (err, user) => {
+    if(user) {
+      res.status(400).json({
+        message: "Username already exists"
       });
+      // deprecated below one
+      // res.send(400, {
+      //   message: "Username already exists"
+      // });
+    }
+    else {
+      // Hash password
+      bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
+        const user = new User({
+          username: req.body.username,
+          password: hashPassword
+        });
 
-      user.save(function (err) {
-        if(err) {
-          console.log(err);
-        }
-        else {
-          // console.log("success");
-          res.end();
-        }
+        user.save(function (err) {
+          if(err) {
+            console.log(err);
+          }
+          else {
+            // console.log("success");
+            res.end();
+          }
+        });
       });
+    }
   });
-
 });
 
 app.post("/api/login", (req, res) => {

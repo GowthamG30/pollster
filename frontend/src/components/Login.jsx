@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
 import Verify from "./Verify";
@@ -48,13 +48,10 @@ const Login = () => {
       <Navbar />
       <Verify />
       <form className="login-form" onSubmit={handleSubmit}>
-        <p className="login-label">Username:</p>
-        <input type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
-        
-        <p className="login-label">Password:</p>
-        <input type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
-
-        <button className="login" type="submit">Login</button>
+        <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
+        <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
+        <p>New user? <Link to="/register">Register here</Link></p>
+        <button className="login-button" type="submit">Login</button>
       </form>
     </>
   );

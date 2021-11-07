@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "./Loader";
-import { Pie } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import Navbar from "./Navbar";
 import Verify from "./Verify";
 
@@ -10,6 +10,7 @@ const Stats = () => {
 	const [question, setQuestion] = useState("");
   const [names, setNames] = useState([]);
   const [counts, setCounts] = useState([]);
+  const [typeOfChart, setTypeOfChart] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const { id } = useParams();
 
@@ -83,21 +84,38 @@ const Stats = () => {
 		}
   };
 
+  const getChart = () => {
+    if(typeOfChart === 0) {
+      return (
+        <Bar
+          data={data}
+          options={options}
+        />
+      );
+    }
+    else if(typeOfChart === 1) {
+      return (
+        <Pie
+          data={data}
+          options={options}
+        />
+      );
+    }
+    else {
+      return (null);
+    }
+  };
+
   return (
     <>
       <Navbar />
       <Verify />
+      <button onClick={() => (setTypeOfChart(prev => (prev+1)%2))}>Type of Chart</button>
       {
         loaded ?
           <>
-            <Link to={"/poll/" + id}>
-              Back
-            </Link>
             <div className="stats">
-              <Pie
-                data={data}
-                options={options}
-              />
+              {getChart()}
             </div>
           </> :
         <Loader />

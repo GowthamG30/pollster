@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
 import Verify from "./Verify";
@@ -7,6 +7,7 @@ import Verify from "./Verify";
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+	const [error, setError] = useState("");
   const [redirect, setRedirect] = useState(false);
   
   const handleUsername = (event) => {
@@ -35,7 +36,10 @@ const Register = () => {
         console.log(res);
         setRedirect(true);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+				console.error("Register err: ", err);
+				// setError("User Already Exists");
+			});
   };
 
   if(redirect) {
@@ -47,14 +51,12 @@ const Register = () => {
     <>
       <Navbar />
       <Verify />
-      <form className="register-form" onSubmit={handleSubmit}>
-        <p className="register-label">Username:</p>
-        <input type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
-        
-        <p className="register-label">Password:</p>
-        <input type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
-
-        <button className="register" type="submit">Register</button>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
+        <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
+        <p>Already a member? <Link to="/login">Login here</Link></p>
+				<span className="error">{error}</span>
+        <button className="login-button" type="submit">Register</button>
       </form>
     </>
   );
