@@ -6,20 +6,31 @@ import Navbar from "./Navbar";
 import Verify from "./Verify";
 
 const Poll = () => {
-  const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}]});
+  const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], voters: []});
   const [index, setIndex] = useState(-1);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const [currentUserName, setCurrentUserName] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
+    let requestOptions = {headers: {}};
+		requestOptions.headers["content-type"] = "application/json";
+		
+		let accessToken = localStorage.getItem("accessToken");
+    if(accessToken) {
+			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
+    }
+		JSON.stringify(requestOptions);
+
     axios
-    .get("/api/poll/" + id)
-    .then(res => {
-      setPoll(res.data);
-      setLoaded(true);
-    })
-    .catch(err => console.error(err));
+      .get("/api/poll/" + id, requestOptions)
+      .then(res => {
+        setCurrentUserName(res.data.currentUserName);
+        setPoll(res.data.poll);
+        setLoaded(true);
+      })
+      .catch(err => console.error(err));
   }, [id]);
 
   const handleSubmit = (event) => {
@@ -31,22 +42,38 @@ const Poll = () => {
         "poll": poll,
         "index": index
       });
-      
-      axios
-        .post("/api/vote/" + id, params, { 
-          "headers": {
-            "content-type": "application/json",
-          },})
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-  
-      window.location.href = "../poll/" + id + "/stats"; // path check
-      // or use redirect
+
+      if(!poll.voters.includes(currentUserName)) {
+        let requestOptions = {headers: {}};
+        requestOptions.headers["content-type"] = "application/json";
+        
+        let accessToken = localStorage.getItem("accessToken");
+        if(accessToken) {
+          requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
+        }
+        JSON.stringify(requestOptions);
+        
+        axios
+          .post("/api/vote/" + id, params, requestOptions)
+          .then(res => console.log(res))
+          .catch(err => console.error(err));
+        
+        // success msg
+
+        setTimeout(() => {
+          window.location.href = "../poll/" + id + "/stats"; // path check and later use redirect
+        }, 10000);
+        
+      }
+      else {
+        // you have already voted
+        errorBuffer += "You can only vote once! \n"
+      }
     }
     else {
 			errorBuffer += "Select atleast one option\n"
-      setError(errorBuffer);
     }
+      setError(errorBuffer);
   }
 
   const onValueChange = (event) => {

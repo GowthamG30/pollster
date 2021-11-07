@@ -7,6 +7,7 @@ import Verify from "./Verify";
 const Create = () => {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([""]);
+  const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState("");
 
   const handleOptions = (index, event) => {
@@ -47,8 +48,8 @@ const Create = () => {
 		}
 
     const params = JSON.stringify({
-			"question": question,
-      "options": options
+			question: question,
+      options: options
     });
 
     let requestOptions = {headers: {}};
@@ -64,11 +65,16 @@ const Create = () => {
       .post("/api/create", params, requestOptions)
       .then(res => {
 				// console.log(res)
+        setRedirect(true);
 			})
       .catch(err => {
         console.error(err);
       });
   };
+
+  if(redirect) {
+    return <Redirect to="/polls"/>;
+  }
 
   return (
     <>

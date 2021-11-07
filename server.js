@@ -44,42 +44,76 @@ const generateAccessToken = (data) => {
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) return res.sendStatus(401);
+  if (token == null) {
+    return res.sendStatus(401);
+  }
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
     if(err) {
       // console.log(err);
       return res.sendStatus(403);
     }
-    req.user = user;
+    req.currentUserName = user.name;
     next();
   })
 };
 
 app.get("/api/verify", authenticateToken, (req, res) => {
-	res.end();
+	res.send(req.currentUserName);
 });
 
-app.post("/api/register", (req, res) => {
+app.post("/api/register", (req, res) => { //////////////////////////////////////////////////////////////////
   // check if username already present
+  // User.findOne({
+  //   where: {
+  //     username: req.body.username
+  //   }
+  // }).then(user => {
+  //   if (user) {
+  //     res.status(400).json({
+  //       message: "Username already exists"
+  //     });
+  //   } else {
+  //     // hash password
+        
+  //   bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
+  //     const user = new User({
+  //       username: req.body.username,
+  //       password: hashPassword
+  //     });
 
-  bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
-    const user = new User({
-      username: req.body.username,
-      password: hashPassword
-    });
+  //     user.save(function (err) {
+  //       if(err) {
+  //         console.log(err);
+  //       }
+  //       else {
+  //         // console.log("success");
+  //         res.end();
+  //       }
+  //     });
 
-    user.save(function (err) {
-      if(err) {
-        console.log(err);
-      }
-      else {
-        console.log("success");
-				res.end();
-      }
-    });
+  //   });
+  //   }
 
+
+
+    bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
+      const user = new User({
+        username: req.body.username,
+        password: hashPassword
+      });
+
+      user.save(function (err) {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          // console.log("success");
+          res.end();
+        }
+      });
   });
+
 });
 
 app.post("/api/login", (req, res) => {
@@ -109,21 +143,31 @@ app.post("/api/login", (req, res) => {
   });
 });
 
-app.get("/api/polls", (req, res) => {
-  Poll.find({},(err, foundPosts) => {
-    res.json(foundPosts);
+app.get("/api/polls", authenticateToken, (req, res) => {
+  const currentUserName = req.currentUserName;
+  const data = [];
+  User.find({}, (err, foundUsers) => {
+    if(err) {
+      console.log(err);
+    }
+    else {
+      foundUsers.forEach(user => {
+        data.push({
+          username: user.username,
+          polls: user.polls
+        });
+      });
+      res.json({
+        currentUserName: currentUserName,
+        users: data
+      });
+    }
   });
-
-  // let data = [];
-  // User.find({}, (err, foundUsers) => {
-  //   console.log(foundUsers);
-  //   // data.push({user: foundUsers, polls: foundUsers.polls});
-  //   // res.json(foundPosts);
-  // });
 });
 
 
-app.post("/api/create", (req, res) => {
+app.post("/api/create", authenticateToken, (req, res) => {
+  const currentUserName = req.currentUserName;
   const options = [];
   req.body.options.map((element) => {
     options.push({name: element, count: 0});
@@ -133,33 +177,46 @@ app.post("/api/create", (req, res) => {
     options: options
   });
 
-  data.save((err, result) => {
-		if (err){
-			console.log(err);
-		}
-		else{
-			res.end();
-		}
-	});
+  User.findOneAndUpdate({username: currentUserName}, {$push: {polls: data}}, (err, foundUser) => {
+    if(err) {
+      console.log(err);
+    }
+    else {
+      data.save((err) => {
+        if(err) {
+          console.log(err);
+        }
+        else {
+          // console.log("success");
+          res.end();
+        }
+      });
+    }
+  });
 });
 
-app.get("/api/poll/:id", (req, res) => {
-  let id = req.params.id;
+app.get("/api/poll/:id", authenticateToken, (req, res) => {
+  const currentUserName = req.currentUserName;
+  const id = req.params.id;
   Poll.findById(id, (err, result) => {
     if(err) {
       throw err;
     }
-    res.json(result);
+    res.send({
+      currentUserName: currentUserName,
+      poll: result
+    });
   });
 });
 
-app.post("/api/vote/:id", (req, res) => {
+app.post("/api/vote/:id", authenticateToken, (req, res) => {
+  const currentUserName = req.currentUserName;
   const id = req.params.id; // body better?
   const poll = req.body.poll;
   const index = req.body.index;
   const newOptions = poll.options;
   newOptions[index].count++;
-  Poll.findOneAndUpdate({_id: id}, {options: newOptions}, (err, doc) => {
+  Poll.findOneAndUpdate({_id: id}, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
     if(err) {
       console.log(err);
     }

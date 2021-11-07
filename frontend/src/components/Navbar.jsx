@@ -9,6 +9,7 @@ const Navbar = () => {
   const [redirect, setRedirect] = useState(false);
   const [newPath, setNewPath] = useState("/");
   const [loaded, setLoaded] = useState(false);
+  const [currentUserName, setCurrentUser] = useState("");
   // Paths for which authentication is NOT required
   const excludePaths = ["/", "/login", "/register", "/about"];
 
@@ -27,6 +28,7 @@ const Navbar = () => {
       axios
       .get("/api/verify", requestOptions)
       .then(res => {
+        setCurrentUser(res.data);
         setLoaded(true);
         setIsAuthenticated(true);
       })
@@ -53,6 +55,9 @@ const Navbar = () => {
 					<Link to="/about">
 						About
 					</Link>
+				</li>
+        <li className="nav-item">
+						{currentUserName}
 				</li>
         <li className="nav-item">
 					<Link to="/logout">

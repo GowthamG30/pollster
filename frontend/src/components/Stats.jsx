@@ -14,18 +14,27 @@ const Stats = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    let requestOptions = {headers: {}};
+    requestOptions.headers["content-type"] = "application/json";
+    
+    let accessToken = localStorage.getItem("accessToken");
+    if(accessToken) {
+      requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
+    }
+    JSON.stringify(requestOptions);
+
     axios
-    .get("/api/poll/" + id)
-    .then(res => {
-			setQuestion(res.data.question);
-      const options = res.data.options;
-      options.forEach(element => {
-        setNames((prevNames) => [...prevNames, element.name]); // prevState is very important
-        setCounts((prevCounts) => [...prevCounts, element.count]);
-      });
-      setLoaded(true);
-    })
-    .catch(err => console.error(err));
+      .get("/api/poll/" + id, requestOptions)
+      .then(res => {
+        setQuestion(res.data.poll.question);
+        const options = res.data.poll.options;
+        options.forEach(element => {
+          setNames((prevNames) => [...prevNames, element.name]); // prevState is very important
+          setCounts((prevCounts) => [...prevCounts, element.count]);
+        });
+        setLoaded(true);
+      })
+      .catch(err => console.error(err));
   }, [id]);
 
   const data = {

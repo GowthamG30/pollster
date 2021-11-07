@@ -8,7 +8,8 @@ const pollSchema = new mongoose.Schema({
   options: [{
     name: String,
     count: Number
-  }]
+  }],
+  voters: [String]
 });
 
 const userSchema = new mongoose.Schema({
