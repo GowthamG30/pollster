@@ -4,6 +4,7 @@ const Footer = () => {
   const date = new Date();
   return (
     <footer>
+      {/*add contact us*/}
       Copyright © {date.getFullYear()}
     </footer>
   );

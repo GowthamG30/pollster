@@ -5,11 +5,11 @@ import Loader from "./Loader";
 import Navbar from "./Navbar";
 
 const Polls = () => {
+  const [allPolls, setAllPolls] = useState([]);
+  const [currentUserName, setCurrentUserName] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [myPolls, setMyPolls] = useState([]);
-  const [allPolls, setAllPolls] = useState([]);
   const [showMyPolls, setShowMyPolls] = useState(false);
-  const [currentUserName, setCurrentUserName] = useState("");
 
   useEffect(() => {
     let requestOptions = {headers: {}};

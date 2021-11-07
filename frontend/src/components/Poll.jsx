@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Redirect, useParams } from "react-router-dom";
 import axios from "axios";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
 
 const Poll = () => {
-  const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], author: "", voters: []});
+  const [currentUserName, setCurrentUserName] = useState("");
+  const [error, setError] = useState("");
   const [index, setIndex] = useState(-1);
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState("");
-  const [currentUserName, setCurrentUserName] = useState("");
+  const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], author: "", voters: []});
+  const [redirect, setRedirect] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -57,15 +58,14 @@ const Poll = () => {
           .then(res => console.log(res))
           .catch(err => console.error(err));
         
-        // success msg
+        // success msg - useState
 
         setTimeout(() => {
-          window.location.href = "../poll/" + id + "/stats"; // path check and later use redirect
-        }, 1000);
+          setRedirect(true);
+        }, 750);
         
       }
       else {
-        // you have already voted
         errorBuffer += "You can only vote once! \n"
       }
     }
@@ -73,6 +73,10 @@ const Poll = () => {
 			errorBuffer += "Select atleast one option\n"
     }
       setError(errorBuffer);
+  }
+
+  if(redirect) {
+    return <Redirect to={"../poll/" + id + "/stats"}/>;
   }
 
   const onValueChange = (event) => {

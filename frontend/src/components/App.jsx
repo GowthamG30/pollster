@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"; 
 import About from "./About";
 import Create from "./Create";
 import Dashboard from "./Dashboard";
@@ -10,7 +11,6 @@ import Poll from "./Poll";
 import Polls from "./Polls";
 import Register from "./Register";
 import Stats from "./Stats";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"; 
 
 const App = () => {
   return (

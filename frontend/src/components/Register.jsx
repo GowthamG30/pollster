@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
-import Verify from "./Verify";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [username, setUsername] = useState("");
   
   const handleUsername = (event) => {
     setUsername(event.target.value);
@@ -46,11 +45,9 @@ const Register = () => {
     return <Redirect to="/login"/>;
   }
 
-  // write class names in css
   return (
     <>
       <Navbar />
-      <Verify />
       <form className="login-form" onSubmit={handleSubmit}>
         <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
         <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />

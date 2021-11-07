@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
 
 const Create = () => {
-  const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState([""]);
-  const [redirect, setRedirect] = useState(false);
   const [error, setError] = useState("");
+  const [options, setOptions] = useState([""]);
+  const [question, setQuestion] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleOptions = (index, event) => {
     const newOptions = [...options];
@@ -18,22 +18,22 @@ const Create = () => {
   const handleQuestion = (event) => {
     setQuestion(event.target.value);
   };
-  
+
   const addOptions = () => {
     setOptions([...options, ""]);
   };
-  
+
   const removeOptions = (index) => {
     const newOptions = [...options];
     newOptions.splice(index, 1);
     setOptions(newOptions);
   };
-  
+
   const handleSubmit = (event) => {
     event.preventDefault();
 		let errorBuffer = "";
 
-    // Validation
+    // Validate Inputs
 		if(!question)
 			errorBuffer += "Question should not be left empty\n";
 		

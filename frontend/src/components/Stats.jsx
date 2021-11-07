@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Bar, Pie } from "react-chartjs-2";
 import axios from "axios";
 import Loader from "./Loader";
-import { Bar, Pie } from "react-chartjs-2";
 import Navbar from "./Navbar";
 
 const Stats = () => {
-	const [question, setQuestion] = useState("");
-  const [names, setNames] = useState([]);
   const [counts, setCounts] = useState([]);
-  const [typeOfChart, setTypeOfChart] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [names, setNames] = useState([]);
+  const [question, setQuestion] = useState("");
+  const [typeOfChart, setTypeOfChart] = useState(0);
   const { id } = useParams();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Stats = () => {
         setQuestion(res.data.poll.question);
         const options = res.data.poll.options;
         options.forEach(element => {
-          setNames((prevNames) => [...prevNames, element.name]); // prevState is very important
+          setNames((prevNames) => [...prevNames, element.name]);
           setCounts((prevCounts) => [...prevCounts, element.count]);
         });
         setLoaded(true);

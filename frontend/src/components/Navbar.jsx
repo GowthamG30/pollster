@@ -4,14 +4,14 @@ import axios from "axios";
 import Nav from "./Nav";
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentPath, setCurrentPath] = useState("/");
-  const [redirect, setRedirect] = useState(false);
-  const [newPath, setNewPath] = useState("/");
-  const [loaded, setLoaded] = useState(false);
   const [currentUserName, setCurrentUser] = useState("");
-  const excludePaths = ["/", "/login", "/register"];
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [newPath, setNewPath] = useState("/");
+  const [redirect, setRedirect] = useState(false);
   const commonPaths = ["/about"];
+  const excludePaths = ["/", "/login", "/register"];
 
 	useEffect(() => {
     let accessToken = localStorage.getItem("accessToken");
@@ -47,11 +47,14 @@ const Navbar = () => {
     }
   }, []);
 
-  let display;
+  let navList;
 
   if(isAuthenticated) { // if user is authenticated
-    display = (
+    navList = (
       <ul className="nav-list">
+        <li className="nav-item">
+          {currentUserName}
+				</li>
 				<li className="nav-item">
 					<Link to="/polls">
 						Polls
@@ -63,9 +66,6 @@ const Navbar = () => {
 					</Link>
 				</li>
         <li className="nav-item">
-						{currentUserName}
-				</li>
-        <li className="nav-item">
 					<Link to="/" onClick={() => {localStorage.removeItem("accessToken");}}>
 						Logout
 					</Link>
@@ -74,7 +74,7 @@ const Navbar = () => {
     )
   }
   else {
-    display = (
+    navList = (
       <ul className="nav-list">
 				<li className="nav-item">
 					<Link to="/login">
@@ -109,7 +109,7 @@ const Navbar = () => {
         {/* Hamburger */}
         <span className="material-icons hamburger">menu</span>
 
-        {display /* menu */}
+        {navList /* menu */}
       </nav> :
     <Nav />
   );

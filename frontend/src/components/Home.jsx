@@ -1,13 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
-import Verify from "./Verify";
 
 const Home = () => {
 	return (
     <>
       <Navbar />
-      <Verify />
       <div className="home-section">
         <div className="home-left-section">
           <h1 className="big-heading">Your Vote Matters a lot and a lootttttt!</h1>
