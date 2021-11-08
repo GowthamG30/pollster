@@ -4,11 +4,9 @@ import axios from "axios";
 import Nav from "./Nav";
 
 const Navbar = () => {
-  const [currentPath, setCurrentPath] = useState("/");
   const [currentUserName, setCurrentUser] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [newPath, setNewPath] = useState("/");
   const [redirect, setRedirect] = useState(false);
   const commonPaths = ["/about"];
   const excludePaths = ["/", "/login", "/register"];
@@ -29,15 +27,14 @@ const Navbar = () => {
         .get("/api/verify", requestOptions)
         .then(res => {
           setCurrentUser(res.data);
-          setLoaded(true);
           setIsAuthenticated(true);
+          setLoaded(true);
         })
         .catch(err => {
           // console.error("Navbar err:" + err);
-					if(!commonPaths.includes(currentPath)) {
-						setNewPath("/login");
-						setRedirect(true);
-					}
+          if(!commonPaths.includes(currentPath)) {
+            setRedirect(true);
+          }
           setLoaded(true);
         });
     }
@@ -95,8 +92,14 @@ const Navbar = () => {
     )
   }
 
+  const handleClick = () => {
+    const toggleButton = document.querySelector('.hamburger');
+    const navList = document.querySelector('.nav-list');
+    navList.classList.toggle('navbar-toggle');
+  }
+
   if(redirect) {
-    return <Redirect to={newPath} />;
+    return <Redirect to="/"/>;
   }
 
   return (
@@ -107,7 +110,7 @@ const Navbar = () => {
         </Link>
 
         {/* Hamburger */}
-        <span className="material-icons hamburger">menu</span>
+        <span className="material-icons hamburger" onClick={handleClick}>menu</span>
 
         {navList /* menu */}
       </nav> :

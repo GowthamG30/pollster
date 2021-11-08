@@ -32,13 +32,13 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if(token == null) {
-    return res.sendStatus(401);
+    return res.status(401).send("Unauthorized access");
   }
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
     if(err) {
-      // console.log(err);
-      return res.sendStatus(403);
+      console.error(err);
+      return res.status(403).send("Session expired");
     }
     req.currentUserName = user.name;
     next();
@@ -53,32 +53,36 @@ app.get("/api/verify", authenticateToken, (req, res) => {
 app.post("/api/register", (req, res) => {
   // Check if username already exists
   User.findOne({username: req.body.username}, (err, user) => {
-    if(user) {
-      res.status(400).json({
-        message: "Username already exists"
-      });
-      // deprecated - below one
-      // res.send(400, {
-      //   message: "Username already exists"
-      // });
+    if(err) {
+			console.error(err);
+			res.status(500).send("Internal server error");
+		}
+    else if(user) {
+      res.status(400).send("Username already exists");
     }
     else {
       // Hash password
-      bcrypt.hash(req.body.password, saltRounds, (err, hashPassword) => {
-        const user = new User({
-          username: req.body.username,
-          password: hashPassword
-        });
-
-        user.save(function (err) {
-          if(err) {
-            console.log(err);
-          }
-          else {
-            // console.log("success");
-            res.end();
-          }
-        });
+      bcrypt.hash(req.body.password, saltRounds, (err_hash, hashPassword) => {
+        if(err_hash) {
+          console.error(err_hash);
+          res.status(500).send("Internal server error");
+        }
+        else {
+          const user = new User({
+            username: req.body.username,
+            password: hashPassword
+          });
+  
+          user.save((err_save) => {
+            if(err_save) {
+              console.error(err_save);
+              res.status(500).send("Internal server error");
+            }
+            else {
+							res.end();
+						}
+          });
+        }
       });
     }
   });
@@ -91,22 +95,27 @@ app.post("/api/login", (req, res) => {
 
   User.findOne({username: username}, (err, foundUser) => {
     if(err) {
-      console.log(err);
+      console.error(err);
+      res.status(500).send("Internal server error");
     }
     else {
       if(foundUser) {
-        bcrypt.compare(password, foundUser.password, (error, result) => {
-          if(result) {	// Password matched
+        bcrypt.compare(password, foundUser.password, (err_cmp, result) => {
+					if(err_cmp) {
+            console.error(err_cmp);
+            res.status(500).send("Internal server error");
+          }
+          else if(result) {	// Password matched
             const accessToken = generateAccessToken({name: username});
             res.send({username: username, accessToken: accessToken});
           }
           else {
-            res.sendStatus(401);
+            res.status(401).send("Please provide a valid username and password.");
           }
         });
       }
       else {
-        res.sendStatus(401);
+        res.status(401).send("Please provide a valid username and password.");
       }
     }
   });
@@ -127,8 +136,15 @@ app.post("/api/create", authenticateToken, (req, res) => {
     voters: [],
   });
   
-  newPoll.save();
-  res.end();
+  newPoll.save((err) => {
+    if(err) {
+      console.error(err);
+      res.status(500).send("Internal server error");
+    }
+    else {
+      res.end();
+    }
+  });
 });
 
 // Get all polls
@@ -136,7 +152,8 @@ app.get("/api/polls", authenticateToken, (req, res) => {
   const currentUserName = req.currentUserName;
   Poll.find({}, (err, foundPolls) => {
     if(err) {
-      console.log(err);
+      console.error(err);
+			res.status(500).send("Internal server error");
     }
     else {
       res.json({
@@ -154,7 +171,8 @@ app.route("/api/poll/:id")
     const id = req.params.id;
     Poll.findById(id, (err, foundPoll) => {
       if(err) {
-        console.log(err);
+        console.error(err);
+        res.status(500).send("Internal server error");
       }
       else {
         res.json({
@@ -168,8 +186,13 @@ app.route("/api/poll/:id")
   .delete(authenticateToken, (req, res) => {
     const id = req.params.id;
     Poll.deleteOne({_id: id}, (err, deletedPoll) => {
-      if(err) console.log(err);
-      res.end();
+      if(err) {
+        console.error(err);
+        res.status(500).send("Internal server error");
+      }
+			else {
+				res.end();
+			}
     });
   });
 
@@ -182,8 +205,13 @@ app.post("/api/vote/:id", authenticateToken, (req, res) => {
   const newOptions = poll.options;
   newOptions[index].count++;
   Poll.findByIdAndUpdate(id, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
-    if(err) console.log(err);
-    res.end();
+    if(err) {
+			console.error(err);
+			res.status(500).send("Internal server error");
+		}
+		else {
+			res.end();
+		}
   });
 });
 

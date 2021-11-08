@@ -142,6 +142,10 @@ a:hover {
   color: var(--blue-link);
 }
 
+/* .login-page a:visited {
+  color: var(--blue-link);
+} */
+
 .login-form {
   display: flex;
   flex-direction: column;
@@ -215,6 +219,7 @@ a:hover {
   font-weight: bold;
   padding: 1rem 2rem;
   text-decoration: none;
+  margin-bottom: 1rem;
 }
 
 .big-heading {
@@ -238,7 +243,7 @@ a:hover {
 
 /* Create Poll */
 .create-form {
-  padding: 3% 12% 3% 12%;
+  padding: 3% 12% 7% 12%;
 }
 
 .create-label {

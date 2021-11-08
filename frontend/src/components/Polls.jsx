@@ -7,14 +7,13 @@ import Navbar from "./Navbar";
 const Polls = () => {
   const [allPolls, setAllPolls] = useState([]);
   const [currentUserName, setCurrentUserName] = useState("");
+  const [error, setError] = useState("");
   const [loaded, setLoaded] = useState(false);
   const [myPolls, setMyPolls] = useState([]);
   const [showMyPolls, setShowMyPolls] = useState(false);
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
-		// Intitially all Polls are shown
-		document.getElementsByName("allPolls")[0].classList.add("clicked");
-
 		// JWT verification for API request
     let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
@@ -40,7 +39,18 @@ const Polls = () => {
 
         setLoaded(true);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        if(err.response.status === 403) {
+          alert("Session expired");
+          window.location.reload();
+        }
+        else if(err.response.status === 500) {
+          alert("Internal server error");
+        }
+        else {
+          alert("Something went wrong");
+        }
+      });
   }, []);
 
   const deletePoll = id => {
@@ -56,14 +66,26 @@ const Polls = () => {
     axios
       .delete("/api/poll/" + id, requestOptions)
       .then(res => {
-        window.location.reload();
+        setSuccess("Poll deleted.");
+        setTimeout(() => {
+          window.location.reload();
+        }, 750);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        if(err.response.status === 403) {
+          alert("Session expired");
+          window.location.reload();
+        }
+        else if(err.response.status === 500) {
+          alert("Internal server error");
+        }
+        else {
+          alert("Something went wrong");
+        }
+      });
   }
 
   const handleClick = (event) => {
-    // set properly later
-    // setShowMyPolls(!showMyPolls);
 		if(event.target.name === "myPolls") {
 			setShowMyPolls(true);
 			document.getElementsByName("myPolls")[0].classList.add("clicked");
@@ -76,40 +98,69 @@ const Polls = () => {
 		}
   };
 
+  const getPolls = () => {
+    if(showMyPolls) {
+      return (
+        <>
+        {
+          myPolls.length ?
+          <div className="polls">
+            {
+              myPolls.map((poll) => (
+              <>
+                <Link to={"/poll/" + poll._id}>
+                  <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {currentUserName}</p>
+                </Link>
+                <button type="button" className="remove" onClick={() => deletePoll(poll._id)}>
+                  <span className="material-icons">delete_outline</span>
+                </button>
+              </>
+              ))
+            }
+          </div> :
+          <h5>Oops no polls...</h5>
+        }
+        </>
+      );
+    }
+    else {
+      return (
+        <>
+        {
+          allPolls.length ?
+          <div className="polls">
+            {
+              allPolls.map((poll) =>
+                <Link to={"/poll/" + poll._id}>
+                  <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {poll.author}</p>
+                </Link>
+              )
+            }
+          </div> :
+          <h5>Oops no polls...</h5>
+        }
+        </>
+      );
+    }
+  }
+
   return (
     <>
       <Navbar />
-      <Verify />
 			<div className="container">
-				<div className="btn-group">
-					<button className="btn-group-btn left-btn " name="myPolls" onClick={handleClick}>My polls</button>
-					<button className="btn-group-btn right-btn" name="allPolls" onClick={handleClick}>All polls</button>
-				</div>
 				{
-					loaded ?
-						allUsers.length ?
-						(
-							showMyPolls ?
-							<div className="polls">
-								{myPolls.map((poll) =>
-									<Link to={"/poll/" + poll._id}>
-										<p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {currentUserName}</p>
-									</Link>
-								)}
-							</div> :
-							<div className="polls">
-								{allUsers.map((user) =>
-									user.polls.map((poll) =>
-										<Link to={"/poll/" + poll._id}> {/* if we need user info of poll, put user._id here*/}
-											<p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {user.username}</p>
-										</Link>
-									)
-								)}
-							</div>
-						) :
-						<h5>Oops no polls...</h5> :
-					<Loader />
-				}
+          loaded ?
+            <>
+              <span className="error">{error}</span>
+              <span className="success">{success}</span>
+              <div className="btn-group">
+                <button className="btn-group-btn left-btn" name="myPolls" onClick={handleClick}>My polls</button>
+                <button className="btn-group-btn right-btn clicked" name="allPolls" onClick={handleClick}>All polls</button>
+              </div>
+              {getPolls()}
+            </> :
+          <Loader />
+        }
 			</div>
     </>
   );

@@ -8,6 +8,7 @@ const Create = () => {
   const [options, setOptions] = useState([""]);
   const [question, setQuestion] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [success, setSuccess] = useState("");
 
   const handleOptions = (index, event) => {
     const newOptions = [...options];
@@ -63,11 +64,22 @@ const Create = () => {
     axios
       .post("/api/create", params, requestOptions)
       .then(res => {
-				// console.log(res)
-        setRedirect(true);
+        setSuccess("Poll created!");
+        setTimeout(() => {
+          setRedirect(true);
+        }, 750);
 			})
       .catch(err => {
-        console.error(err);
+        if(err.response.status === 403) {
+          alert("Session expired");
+          window.location.reload();
+        }
+        else if(err.response.status === 500) {
+          alert("Internal server error");
+        }
+        else {
+          alert("Something went wrong");
+        }
       });
   };
 
@@ -99,6 +111,7 @@ const Create = () => {
         <button className="add" type="button" onClick={() => addOptions()}>Add Option</button><br/>
         <span className="error">{error}</span>
         <button className="submit" type="submit">Create</button>
+        <span className="success">{success}</span>
       </form>
     </>
   );

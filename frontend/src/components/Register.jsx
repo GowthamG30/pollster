@@ -20,11 +20,25 @@ const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    let errorBuffer = "";
+
+    // Validate Inputs
+		if(!username)
+			errorBuffer += "Username should not be left empty\n";
+		
+		if(!password)
+			errorBuffer += "Username should not be left empty\n";
+
+		if(errorBuffer) {
+			setError(errorBuffer);			
+			console.log("Error in validation" + errorBuffer);
+			return;
+		}
+
     const params = JSON.stringify({
       "username": username,
       "password": password
     });
-    // if (username) write
 
     axios
       .post("/api/register", params, {
@@ -32,12 +46,11 @@ const Register = () => {
           "content-type": "application/json",
         },})
       .then(res => {
-        console.log(res);
         setRedirect(true);
       })
       .catch(err => {
-				console.error("Register err: ", err);
-				// setError("User Already Exists");
+        errorBuffer += err.response.data;
+        setError(errorBuffer);
 			});
   };
 
@@ -48,14 +61,16 @@ const Register = () => {
   return (
     <>
       <Navbar />
-			<h1 className="big-heading">Register here!</h1>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
-        <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
-        <p>Already a member? <Link to="/login">Login here</Link></p>
-				<span className="error">{error}</span>
-        <button className="login-button" type="submit">Register</button>
-      </form>
+      <div className="container login-page">
+        <h1 className="big-heading">Register here!</h1>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
+          <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
+          <p>Already a member? <Link to="/login">Login here</Link></p>
+          <span className="error">{error}</span>
+          <button className="login-button" type="submit">Register</button>
+        </form>
+      </div>
     </>
   );
 };

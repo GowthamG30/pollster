@@ -14,9 +14,6 @@ const Stats = () => {
   const { id } = useParams();
 
   useEffect(() => {
-		// Initially Bar graph is shown
-		document.getElementsByName("Bar")[0].classList.add("clicked");
-
 		// JWT verification for API request
     let requestOptions = {headers: {}};
     requestOptions.headers["content-type"] = "application/json";
@@ -38,7 +35,18 @@ const Stats = () => {
         });
         setLoaded(true);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        if(err.response.status === 403) {
+          alert("Session expired");
+          window.location.reload();
+        }
+        else if(err.response.status === 500) {
+          alert("Internal server error");
+        }
+        else {
+          alert("Something went wrong");
+        }
+      });
   }, [id]);
 
   const data = {
@@ -127,7 +135,7 @@ const Stats = () => {
       <Navbar />
 			<div className="container">
 				<div className="btn-group">
-					<button className="btn-group-btn left-btn" name="Bar" onClick={handleClick}>Bar</button>
+					<button className="btn-group-btn left-btn clicked" name="Bar" onClick={handleClick}>Bar</button>
 					<button className="btn-group-btn right-btn" name="Pie" onClick={handleClick}>Pie</button>
 				</div>
 				{

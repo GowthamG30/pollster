@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
 
   const handleUsername = (event) => {
     setUsername(event.target.value);
@@ -18,6 +19,20 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    let errorBuffer = "";
+    // Validate Inputs
+		if(!username)
+			errorBuffer += "Username should not be left empty\n";
+		
+		if(!password)
+			errorBuffer += "Username should not be left empty\n";
+
+		if(errorBuffer) {
+			setError(errorBuffer);			
+			console.log("Error in validation" + errorBuffer);
+			return;
+		}
 
     const params = JSON.stringify({
       "username": username,
@@ -33,7 +48,10 @@ const Login = () => {
         localStorage.setItem("accessToken", res.data.accessToken);
 				setRedirect(true);
       })
-      .catch(err => console.error("login err: " + err));
+      .catch(err => {
+        errorBuffer += err.response.data;
+        setError(errorBuffer);
+			});
   };
 
   if(redirect) {
@@ -49,6 +67,7 @@ const Login = () => {
 					<input className="login-input login-input-top" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
 					<input className="login-input login-input-bottom" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
 					<p>New user? <Link to="/register">Register here</Link></p>
+          <span className="error">{error}</span>
 					<button className="login-button" type="submit">Login</button>
 				</form>
 			</div>

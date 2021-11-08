@@ -11,6 +11,7 @@ const Poll = () => {
   const [loaded, setLoaded] = useState(false);
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], author: "", voters: []});
   const [redirect, setRedirect] = useState(false);
+  const [success, setSuccess] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,7 +31,18 @@ const Poll = () => {
         setPoll(res.data.poll);
         setLoaded(true);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        if(err.response.status === 403) {
+          alert("Session expired");
+          window.location.reload();
+        }
+        else if(err.response.status === 500) {
+          alert("Internal server error");
+        }
+        else {
+          alert("Something went wrong");
+        }
+      });
   }, [id]);
 
   const handleSubmit = (event) => {
@@ -55,15 +67,24 @@ const Poll = () => {
         
         axios
           .post("/api/vote/" + id, params, requestOptions)
-          .then(res => console.log(res))
-          .catch(err => console.error(err));
-        
-        // success msg - useState
-
-        setTimeout(() => {
-          setRedirect(true);
-        }, 750);
-        
+          .then(res => {
+            setSuccess("Voted successfully!");
+            setTimeout(() => {
+              setRedirect(true);
+            }, 750);
+          })
+          .catch(err => {
+            if(err.response.status === 403) {
+              alert("Session expired");
+              window.location.reload();
+            }
+            else if(err.response.status === 500) {
+              alert("Internal server error");
+            }
+            else {
+              alert("Something went wrong");
+            }
+          });
       }
       else {
         errorBuffer += "You can only vote once! \n"
@@ -72,7 +93,7 @@ const Poll = () => {
     else {
 			errorBuffer += "Select atleast one option\n"
     }
-      setError(errorBuffer);
+    setError(errorBuffer);
   }
 
   if(redirect) {
@@ -114,6 +135,7 @@ const Poll = () => {
               }
               <span className="error">{error}</span>
               <button className="button submit" type="submit">Submit</button>
+              <span className="success">{success}</span>
             </form>
           </div>
         )
