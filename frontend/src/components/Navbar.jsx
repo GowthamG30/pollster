@@ -52,6 +52,11 @@ const Navbar = () => {
         <li className="nav-item user">
           {currentUserName}
         </li>
+        <li className="nav-item">
+					<Link to="/create">
+						+
+					</Link>
+				</li>
 				<li className="nav-item">
 					<Link to="/polls">
 						Polls

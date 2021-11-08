@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 
 const Poll = () => {
   const [currentUserName, setCurrentUserName] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
   const [index, setIndex] = useState(-1);
   const [loaded, setLoaded] = useState(false);
   const [poll, setPoll] = useState({question: "", options: [{name: "", count: 0}], author: "", voters: []});
@@ -47,7 +47,7 @@ const Poll = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-		let errorBuffer = "";
+		let errorBuffer = [];
 
     if(index !== -1) {
       const params = JSON.stringify({
@@ -87,11 +87,11 @@ const Poll = () => {
           });
       }
       else {
-        errorBuffer += "You can only vote once!"
+        errorBuffer.push("You can only vote once!");
       }
     }
     else {
-			errorBuffer += "Select atleast one option"
+			errorBuffer.push("Select atleast one option");
     }
     setError(errorBuffer);
   }
@@ -107,41 +107,66 @@ const Poll = () => {
   return (
     <>
       <Navbar />
-      {
-        loaded ?
-        (
-          poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
-          <h5>Empty poll...</h5> :
-          <div className="poll">
-            <Link to={"/poll/"+id+"/stats"}>
-              <p>Stats</p>
-            </Link>
-            <form onSubmit={handleSubmit}>
-              <p className="poll-label">{poll.question}</p>
-              {
-                poll.options.map((option, index) => {
-                  return (
-                    <label className="option">
-                      <input
-                        type="radio"
-                        value={index}
-                        onChange={onValueChange}
-                        name={id}
-                      />
-                      <p>{option.name}</p>
-                    </label>
-                  );
-                })
-              }
-              <span className="error">{error}</span>
-              <button className="button submit" type="submit">Submit</button>
-              <span className="success">{success}</span>
-            </form>
-          </div>
-        )
-        :
-        <Loader />
-      }
+			<div className="container">
+				{
+					loaded ?
+						<>
+							<div className="btn-group">
+								<Link to={"/poll/"+id+"/stats"} className="btn-group-btn left-btn right-btn">
+									Stats
+							  </Link>
+              </div>
+							{
+              poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
+                <h5>Empty poll...</h5> :
+                <div className="poll">
+                  <form onSubmit={handleSubmit}>
+                    <p className="question">{poll.question}</p>
+                    {
+                      poll.options.map((option, index) => {
+                        return (
+                          <label className="option">
+                            <input
+                              type="radio"
+                              value={index}
+                              onChange={onValueChange}
+                              name={id}
+                            />
+                            <p>{option.name}</p>
+                          </label>
+                        );
+                      })
+                    }
+                    {
+                      error.length ?
+                        <div className="error">
+                          {error.map((err) => 
+                            <p>
+                              <span class="material-icons warning">warning_amber</span>
+                              {err}
+                            </p>
+                          )}
+                        </div>
+                      : null
+                    }
+									  <button className="button submit" type="submit">Submit</button>
+                    {
+                      success.length ?
+                        <div className="success">
+                          <p>
+                            <span class="material-icons tick">check_circle_outline</span>
+                            {success}
+                          </p>
+                        </div>
+                      : null
+                    }
+								  </form>
+							  </div>
+							}
+						</>
+					: <Loader />
+				}
+			</div>
     </>
   );
 };

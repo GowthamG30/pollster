@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 const Polls = () => {
   const [allPolls, setAllPolls] = useState([]);
   const [currentUserName, setCurrentUserName] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [myPolls, setMyPolls] = useState([]);
   const [showMyPolls, setShowMyPolls] = useState(false);
