@@ -48,6 +48,7 @@ const Register = () => {
   return (
     <>
       <Navbar />
+			<h1 className="big-heading">Register here!</h1>
       <form className="login-form" onSubmit={handleSubmit}>
         <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
         <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />

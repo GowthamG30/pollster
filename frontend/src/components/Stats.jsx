@@ -14,6 +14,10 @@ const Stats = () => {
   const { id } = useParams();
 
   useEffect(() => {
+		// Initially Bar graph is shown
+		document.getElementsByName("Bar")[0].classList.add("clicked");
+
+		// JWT verification for API request
     let requestOptions = {headers: {}};
     requestOptions.headers["content-type"] = "application/json";
     
@@ -83,6 +87,19 @@ const Stats = () => {
 		}
   };
 
+	const handleClick = (event) => {
+		if(event.target.name == "Bar") {
+			setTypeOfChart(0);
+			document.getElementsByName("Bar")[0].classList.add("clicked");
+			document.getElementsByName("Pie")[0].classList.remove("clicked");
+		}
+		else {
+			setTypeOfChart(1);
+			document.getElementsByName("Pie")[0].classList.add("clicked");
+			document.getElementsByName("Bar")[0].classList.remove("clicked");
+		}
+	}
+
   const getChart = () => {
     if(typeOfChart === 0) {
       return (
@@ -108,16 +125,21 @@ const Stats = () => {
   return (
     <>
       <Navbar />
-      <button onClick={() => (setTypeOfChart(prev => (prev+1)%2))}>Type of Chart</button>
-      {
-        loaded ?
-          <>
-            <div className="stats">
-              {getChart()}
-            </div>
-          </> :
-        <Loader />
-      }
+			<div className="container">
+				<div className="btn-group">
+					<button className="btn-group-btn left-btn" name="Bar" onClick={handleClick}>Bar</button>
+					<button className="btn-group-btn right-btn" name="Pie" onClick={handleClick}>Pie</button>
+				</div>
+				{
+					loaded ?
+						<>
+							<div className="stats">
+								{getChart()}
+							</div>
+						</> :
+					<Loader />
+				}
+			</div>
     </>
   );
 };

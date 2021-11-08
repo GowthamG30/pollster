@@ -3,9 +3,10 @@
 }
 
 :root {
+  --blue-link: #1769e0;
   --blue: #3db2ff;
   --lightpink: #faefef;
-  --orange: #fea02f;
+  --orange: #ff9718;
 }
 
 html {
@@ -23,8 +24,8 @@ body {
 }
 
 #root {
-	position: relative;
-	min-height: 100%;
+  position: relative;
+  min-height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -36,7 +37,6 @@ button {
 
 a,
 a:hover {
-  color: white;
   text-decoration: none;
 }
 
@@ -53,6 +53,7 @@ a:hover {
 }
 
 .logo {
+  color: white;
   font-family: "Ubuntu", sans-serif;
   font-size: 2.5rem;
   font-weight: bold;
@@ -81,7 +82,7 @@ a:hover {
 .nav-item a:hover,
 .nav-item .active {
   background-color: white;
-  color: var(--blue);
+  color: var(--blue-link);
 }
 
 .hamburger {
@@ -109,7 +110,7 @@ a:hover {
   }
 
   .nav-list {
-		display: none;
+    display: none;
     width: 100%;
     flex-direction: column;
     text-align: center;
@@ -129,20 +130,46 @@ a:hover {
 
 /* Login/Register */
 
+.container {
+  padding: 1% 12% 3% 12%;
+}
+
+.login-page {
+  text-align: center;
+}
+
+.login-page a {
+  color: var(--blue-link);
+}
+
 .login-form {
-  padding: 10% 12% 3% 12%;
-	text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .login-input {
-  border-radius: 4px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 5px #ccc;
   height: 2.5rem;
   padding: 0.25rem 0.75rem;
-  width: 30%;
-	margin: 0 auto;
-	display: block;
+  width: 18rem;
+  display: block;
+}
+
+.login-input:focus {
+  position: relative;
+  box-shadow: 0 0 1px 2px rgb(52, 174, 255, 0.5);
+}
+
+.login-input-top {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.login-input-bottom {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .login-button {
@@ -153,15 +180,9 @@ a:hover {
   color: white;
   font-size: 1.5rem;
   font-weight: bold;
-  margin: 2rem auto;
+  margin: 1rem auto;
   padding: 0.75rem 1.5rem;
   text-decoration: none;
-}
-
-@media (max-width: 750px) {
-	.login-input {
-		width: 60%;
-	}
 }
 
 /* Home Page */
@@ -197,7 +218,7 @@ a:hover {
 }
 
 .big-heading {
-	color: rgba(0, 0, 0, 0.801);
+  color: rgba(0, 0, 0, 0.801);
   font-size: 3rem;
   font-weight: bold;
   line-height: 1.5;
@@ -283,16 +304,16 @@ a:hover {
 
 /* Stats */
 .stats {
-	position: relative;
-	height: 75vh;
-	padding: 0 10%;
+  position: relative;
+  height: 75vh;
+  padding: 0 10%;
 }
 
 /* Footer */
 
 footer {
-	position: absolute;
-	bottom: 0;
+  position: absolute;
+  bottom: 0;
   text-align: center;
   width: 100%;
 }
@@ -300,17 +321,17 @@ footer {
 /* Loader */
 
 .loader {
-	width: 75px;
-	height: 75px;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: 50vh auto;
-	background: url(../images/load.gif) no-repeat;
-	opacity: 0.5;
-	background-size: contain;
+  width: 75px;
+  height: 75px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 50vh auto;
+  background: url(../images/load.gif) no-repeat;
+  opacity: 0.5;
+  background-size: contain;
 }
 
 /* Polls */
@@ -328,6 +349,35 @@ footer {
   margin: 0.5rem auto;
   padding: 0.25rem 0.75rem;
   width: 80%;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-group-btn {
+  border: none;
+  background-color: #fff;
+  width: 4rem;
+  height: 2rem;
+  border-radius: 0;
+  border: 1px solid #ccc;
+}
+
+.left-btn {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.right-btn {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.clicked {
+  background-color: #cdcdcd;
+  cursor: default;
 }
 
 /* Poll */
