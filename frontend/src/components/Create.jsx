@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "./Navbar";
 
 const Create = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
   const [options, setOptions] = useState([""]);
   const [question, setQuestion] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -32,17 +32,17 @@ const Create = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-		let errorBuffer = "";
+		let errorBuffer = [];
 
     // Validate Inputs
 		if(!question)
-			errorBuffer += "Question should not be left empty\n";
+			errorBuffer.push("Question should not be left empty");
 		
 		if(options.includes(""))
-			errorBuffer += "No option should be left empty\n";
+			errorBuffer.push("No option should be left empty");
 
-		if(errorBuffer) {
-			setError(errorBuffer);			
+		if(errorBuffer.length) {
+			setError(errorBuffer);
 			console.log("Error in validation" + errorBuffer);
 			return;
 		}
@@ -109,9 +109,29 @@ const Create = () => {
         ))}
 
         <button className="add" type="button" onClick={() => addOptions()}>Add Option</button><br/>
-        <span className="error">{error}</span>
+        {
+          error.length ?
+            <div className="error">
+              {error.map((err) => 
+                <p>
+                  <span class="material-icons warning">warning_amber</span>
+                  {err}
+                </p>
+              )}
+            </div>
+          : null
+        }
         <button className="submit" type="submit">Create</button>
-        <span className="success">{success}</span>
+        {
+          success.length ?
+            <div className="success">
+              <p>
+                <span class="material-icons tick">check_circle_outline</span>
+                {success}
+              </p>
+            </div>
+          : null
+				}
       </form>
     </>
   );

@@ -68,7 +68,7 @@ const Poll = () => {
         axios
           .post("/api/vote/" + id, params, requestOptions)
           .then(res => {
-            setSuccess("Voted successfully!");
+            setSuccess("Vote submitted successfully!");
             setTimeout(() => {
               setRedirect(true);
             }, 750);
@@ -87,11 +87,11 @@ const Poll = () => {
           });
       }
       else {
-        errorBuffer += "You can only vote once! \n"
+        errorBuffer += "You can only vote once!"
       }
     }
     else {
-			errorBuffer += "Select atleast one option\n"
+			errorBuffer += "Select atleast one option"
     }
     setError(errorBuffer);
   }

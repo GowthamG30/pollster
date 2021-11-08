@@ -4,9 +4,10 @@ import axios from "axios";
 import Navbar from "./Navbar";
 
 const Register = () => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState([]);
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [success, setSuccess] = useState("");
   const [username, setUsername] = useState("");
   
   const handleUsername = (event) => {
@@ -20,16 +21,16 @@ const Register = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let errorBuffer = "";
+    let errorBuffer = [];
 
     // Validate Inputs
 		if(!username)
-			errorBuffer += "Username should not be left empty\n";
+			errorBuffer.push("Username should not be left empty");
 		
 		if(!password)
-			errorBuffer += "Username should not be left empty\n";
+			errorBuffer.push("Password should not be left empty");
 
-		if(errorBuffer) {
+		if(errorBuffer.length) {
 			setError(errorBuffer);			
 			console.log("Error in validation" + errorBuffer);
 			return;
@@ -46,10 +47,13 @@ const Register = () => {
           "content-type": "application/json",
         },})
       .then(res => {
-        setRedirect(true);
+        setSuccess("Registration Successful");
+        setTimeout(() => {
+          setRedirect(true);
+        }, 750);
       })
       .catch(err => {
-        errorBuffer += err.response.data;
+        errorBuffer.push(err.response.data);
         setError(errorBuffer);
 			});
   };
@@ -67,8 +71,29 @@ const Register = () => {
           <input className="login-input" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
           <input className="login-input" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
           <p>Already a member? <Link to="/login">Login here</Link></p>
-          <span className="error">{error}</span>
+          {
+            error.length ?
+              <div className="error">
+                {error.map((err) => 
+                  <p>
+                    <span class="material-icons warning">warning_amber</span>
+                    {err}
+                  </p>
+                )}
+              </div>
+            : null
+          }
           <button className="login-button" type="submit">Register</button>
+          {
+            success.length ?
+              <div className="success">
+                <p>
+                  <span class="material-icons tick">check_circle_outline</span>
+                  {success}
+                </p>
+              </div>
+            : null
+          }
         </form>
       </div>
     </>

@@ -30,11 +30,11 @@ const Polls = () => {
 				setCurrentUserName(res.data.currentUserName);
 
         const my_polls = res.data.polls.filter(poll => poll.author === res.data.currentUserName);
-        my_polls.sort((a, b) => (a.question < b.question ? -1 : 1));
+        my_polls.sort(compare);
         setMyPolls(my_polls);
 
         const all_polls = res.data.polls;
-        all_polls.sort((a, b) => (a.author === b.author) ? (a.question < b.question ? -1 : 1) : (a.author < b.author ? -1 : 1));
+        all_polls.sort((a, b) => (a.author=== b.author) ? (compare(a.question, b.question)) : (a.author.toLowerCase() < b.author.toLowerCase() ? -1 : 1));
         setAllPolls(all_polls);
 
         setLoaded(true);
@@ -52,6 +52,35 @@ const Polls = () => {
         }
       });
   }, []);
+
+  const isUppercase = (ch) => {
+    return ch === ch.toUpperCase();
+  };
+
+  const isLowercase = (ch) => {
+    return ch === ch.toLowerCase();
+  };
+
+  const compare = (a, b) => {
+    const len_a = a.length, len_b = b.length;
+    let i = 0, j = 0;
+    while(i < len_a && j < len_b) {
+      if(isLowercase(a[i]) && isLowercase(b[j])) {
+        return (a[i]<b[j] ? -1 : 1);
+      }
+      else if(isUppercase(a[i]) && isUppercase(b[j])) {
+        return (a[i]<b[j] ? -1 : 1);
+      }
+      else if(isLowercase(a[i]) && isUppercase(b[j])) {
+        return -1;
+      }
+      else if(isUppercase(a[i]) && isLowercase(b[j])) {
+        return 1;
+      }
+      i++; j++;
+    }
+    return 0;
+  }
 
   const deletePoll = id => {
     let requestOptions = {headers: {}};

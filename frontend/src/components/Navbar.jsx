@@ -46,12 +46,12 @@ const Navbar = () => {
 
   let navList;
 
-  if(isAuthenticated) { // if user is authenticated
+  if(isAuthenticated) { // If user is authenticated
     navList = (
       <ul className="nav-list">
-        <li className="nav-item">
+        <li className="nav-item user">
           {currentUserName}
-				</li>
+        </li>
 				<li className="nav-item">
 					<Link to="/polls">
 						Polls
@@ -117,6 +117,5 @@ const Navbar = () => {
     <Nav />
   );
 };
-
 
 export default Navbar;
