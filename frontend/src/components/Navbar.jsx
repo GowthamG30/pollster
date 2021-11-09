@@ -98,7 +98,6 @@ const Navbar = () => {
   }
 
   const handleClick = () => {
-    const toggleButton = document.querySelector('.hamburger');
     const navList = document.querySelector('.nav-list');
     navList.classList.toggle('navbar-toggle');
   }

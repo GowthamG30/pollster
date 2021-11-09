@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Bar, Pie } from "react-chartjs-2";
 import axios from "axios";
 import Loader from "./Loader";
@@ -96,7 +96,7 @@ const Stats = () => {
   };
 
 	const handleClick = (event) => {
-		if(event.target.name == "Bar") {
+		if(event.target.name === "Bar") {
 			setTypeOfChart(0);
 			document.getElementsByName("Bar")[0].classList.add("clicked");
 			document.getElementsByName("Pie")[0].classList.remove("clicked");

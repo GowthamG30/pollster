@@ -119,49 +119,49 @@ const Poll = () => {
 							{
               poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
                 <h5>Empty poll...</h5> :
-                <div className="poll">
-                  <form onSubmit={handleSubmit}>
-                    <p className="question">{poll.question}</p>
-                    {
-                      poll.options.map((option, index) => {
-                        return (
-                          <label className="option">
-                            <input
-                              type="radio"
-                              value={index}
-                              onChange={onValueChange}
-                              name={id}
-                            />
-                            <p>{option.name}</p>
-                          </label>
-                        );
-                      })
-                    }
-                    {
-                      error.length ?
-                        <div className="error">
-                          {error.map((err) => 
-                            <p>
-                              <span class="material-icons warning">warning_amber</span>
-                              {err}
-                            </p>
-                          )}
-                        </div>
-                      : null
-                    }
-									  <button className="button submit" type="submit">Submit</button>
-                    {
-                      success.length ?
-                        <div className="success">
-                          <p>
-                            <span class="material-icons tick">check_circle_outline</span>
-                            {success}
-                          </p>
-                        </div>
-                      : null
-                    }
-								  </form>
-							  </div>
+								<form onSubmit={handleSubmit}>
+									<div className="form-body">
+										<p className="poll-question">{poll.question}</p>
+										{
+											poll.options.map((option, index) => {
+												return (
+													<label className="poll-option-label">
+														<input
+															type="radio"
+															value={index}
+															onChange={onValueChange}
+															name={id}
+														/>
+														<p>{option.name}</p>
+													</label>
+												);
+											})
+										}
+									</div>
+									{
+										error.length ?
+											<div className="error">
+												{error.map((err) => 
+													<p>
+														<span class="material-icons warning">warning_amber</span>
+														{err}
+													</p>
+												)}
+											</div>
+										: null
+									}
+									<button className="button submit" type="submit">Submit</button>
+									{
+										success.length ?
+											<div className="success">
+												<p>
+													<span class="material-icons tick">check_circle_outline</span>
+													{success}
+												</p>
+											</div>
+										: null
+									}
+								</form>
 							}
 						</>
 					: <Loader />

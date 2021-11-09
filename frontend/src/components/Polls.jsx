@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 const Polls = () => {
   const [allPolls, setAllPolls] = useState([]);
   const [currentUserName, setCurrentUserName] = useState("");
-  const [error, setError] = useState([]);
+  // const [error, setError] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [myPolls, setMyPolls] = useState([]);
   const [showMyPolls, setShowMyPolls] = useState(false);
@@ -136,14 +136,14 @@ const Polls = () => {
           <div className="polls">
             {
               myPolls.map((poll) => (
-              <>
-                <Link to={"/poll/" + poll._id}>
+              <div className="myPoll-list-item">
+                <Link to={"/poll/" + poll._id} className="poll-list-item">
                   <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {currentUserName}</p>
                 </Link>
                 <button type="button" className="remove" onClick={() => deletePoll(poll._id)}>
                   <span className="material-icons">delete_outline</span>
                 </button>
-              </>
+              </div>
               ))
             }
           </div> :
@@ -159,8 +159,8 @@ const Polls = () => {
           allPolls.length ?
           <div className="polls">
             {
-              allPolls.map((poll) =>
-                <Link to={"/poll/" + poll._id}>
+              allPolls.map((poll, index) =>
+                <Link to={"/poll/" + poll._id} key={index} className="poll-list-item">
                   <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {poll.author}</p>
                 </Link>
               )
@@ -180,8 +180,17 @@ const Polls = () => {
 				{
           loaded ?
             <>
-              <span className="error">{error}</span>
-              <span className="success">{success}</span>
+              {/* <span className="error">{error}</span> */}
+							{
+								success.length ?
+									<div className="success">
+										<p>
+											<span class="material-icons tick">check_circle_outline</span>
+											{success}
+										</p>
+									</div>
+								: null
+							}
               <div className="btn-group">
                 <button className="btn-group-btn left-btn" name="myPolls" onClick={handleClick}>My polls</button>
                 <button className="btn-group-btn right-btn clicked" name="allPolls" onClick={handleClick}>All polls</button>
