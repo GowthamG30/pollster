@@ -112,7 +112,7 @@ const Poll = () => {
 					loaded ?
 						<>
 							<div className="btn-group">
-								<Link to={"/poll/"+id+"/stats"} className="btn-group-btn left-btn right-btn">
+								<Link to={"/poll/"+id+"/stats"} className="stats-btn">
 									Stats
 							  </Link>
               </div>

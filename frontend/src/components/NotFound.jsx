@@ -6,9 +6,10 @@ const NotFound = () => {
   return (
     <>
       <Nav />
-      <div className="not-found">
-        404 : Not Found
-				<Link to="/" className="create-button">Go to Home Page</Link>
+      <div className="container not-found-page">
+			<span class="material-icons not-found-img">warning_amber</span>
+			<p className="not-found-message">404<br/>Page Not Found</p>
+			<Link to="/" className="create-button">Go to Home</Link>
       </div>
     </>
   );

@@ -141,7 +141,7 @@ const Stats = () => {
 				{
 					loaded ?
 						<>
-							<div className="stats">
+							<div className="chart-container">
 								{getChart()}
 							</div>
 						</> :

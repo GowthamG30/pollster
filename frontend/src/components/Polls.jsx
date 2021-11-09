@@ -128,7 +128,7 @@ const Polls = () => {
   };
 
   const getPolls = () => {
-    if(showMyPolls) {
+    if(!showMyPolls) {
       return (
         <>
         {
@@ -137,8 +137,9 @@ const Polls = () => {
             {
               myPolls.map((poll) => (
               <div className="myPoll-list-item">
-                <Link to={"/poll/" + poll._id} className="poll-list-item">
-                  <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {currentUserName}</p>
+                <Link to={"/poll/" + poll._id} className="myPoll-link">
+									<p className="myPoll-content">{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")}</p>
+									{/* <p className="author">{`- ${currentUserName}`}</p> */}
                 </Link>
                 <button type="button" className="remove" onClick={() => deletePoll(poll._id)}>
                   <span className="material-icons">delete_outline</span>
@@ -160,8 +161,9 @@ const Polls = () => {
           <div className="polls">
             {
               allPolls.map((poll, index) =>
-                <Link to={"/poll/" + poll._id} key={index} className="poll-list-item">
-                  <p>{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")} -by {poll.author}</p>
+                <Link to={"/poll/" + poll._id} key={index} className="poll-link">
+									<p className="poll-content">{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")}</p>
+									<p className="author">{`- ${poll.author}`}</p>
                 </Link>
               )
             }

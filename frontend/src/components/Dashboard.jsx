@@ -5,7 +5,7 @@ const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <div className="contanier">
+      <div className="container">
         <h3>This is Dashboard.</h3>
       </div>
     </>
