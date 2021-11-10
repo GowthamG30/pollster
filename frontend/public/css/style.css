@@ -37,6 +37,15 @@ button {
   display: block;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
 p {
   margin: 0;
 }
@@ -153,10 +162,12 @@ a:hover {
   }
 }
 
+/* Dashboard */
+
 /* Login/Register */
 
 .container {
-  padding: 1.5% 12% 5% 12%;
+  padding: 1.5% 12% 2% 12%;
 }
 
 .login-page {
@@ -216,8 +227,9 @@ a:hover {
 .home-section {
   align-items: center;
   display: flex;
-  height: 80vh;
-  padding: 0% 12% 0% 12%;
+  height: 40vh;
+  margin-bottom: 1rem;
+	padding: 0 1rem;
 }
 
 .home-left-section {
@@ -239,20 +251,41 @@ a:hover {
   color: white;
   font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 1rem;
   padding: 1rem 2rem;
   text-decoration: none;
 }
 
 .big-heading {
   color: rgba(0, 0, 0, 0.801);
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
   line-height: 1.5;
 }
 
+.features {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feature-tab {
+  padding: 2.5rem 0;
+  text-align: center;
+  background-color: #fff;
+  width: 250px;
+  margin: 0 1rem;
+  border-radius: 0.5rem;
+}
+
+.feature-icon {
+  color: var(--orange);
+  font-size: 5rem;
+  /* color: lightgrey; */
+}
+
 @media (max-width: 750px) {
   .home-section {
+    height: auto;
     flex-direction: column;
     text-align: center;
   }
@@ -260,6 +293,10 @@ a:hover {
   .home-left-section,
   .home-right-section {
     width: 100%;
+  }
+
+  .features {
+    flex-direction: column;
   }
 }
 
@@ -596,4 +633,14 @@ footer {
 
 .not-found-img {
   font-size: 8rem;
+}
+
+/* About */
+
+.box {
+  border-radius: 1rem;
+  border: 1px solid #ccc;
+  font-size: 1.5rem;
+  margin: 5rem auto auto auto;
+  padding: 1rem;
 }

@@ -150,7 +150,7 @@ const Poll = () => {
 											</div>
 										: null
 									}
-									<button className="button submit" type="submit">Submit</button>
+									<button className="button submit" type="submit">Vote</button>
 									{
 										success.length ?
 											<div className="success">

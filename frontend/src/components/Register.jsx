@@ -70,7 +70,7 @@ const Register = () => {
         <form className="login-form" onSubmit={handleSubmit}>
           <input className="login-input login-input-top" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
           <input className="login-input login-input-bottom" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
-          <p>Already a member? <Link to="/login">Login here</Link></p>
+          <p>Already a user? <Link to="/login">Login here</Link></p>
           {
             error.length ?
               <div className="error">

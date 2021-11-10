@@ -54,7 +54,7 @@ const Navbar = () => {
         </li>
         <li className="nav-item">
 					<Link to="/create">
-						+
+            <span class="material-icons-outlined">add</span>
 					</Link>
 				</li>
 				<li className="nav-item">

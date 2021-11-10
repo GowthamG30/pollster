@@ -128,7 +128,7 @@ const Polls = () => {
   };
 
   const getPolls = () => {
-    if(!showMyPolls) {
+    if(showMyPolls) {
       return (
         <>
         {
@@ -148,7 +148,7 @@ const Polls = () => {
               ))
             }
           </div> :
-          <h5>Oops no polls...</h5>
+          <p>Uh oh..No polls here, <Link to="/create">Create one</Link></p>
         }
         </>
       );
@@ -168,7 +168,7 @@ const Polls = () => {
               )
             }
           </div> :
-          <h5>Oops no polls...</h5>
+          <p>Uh oh..No polls here, <Link to="/create">Create one</Link></p>
         }
         </>
       );
