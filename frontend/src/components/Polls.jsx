@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+// import Error from "./Error";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
+import NoPolls from "./NoPolls";
+import Success from "./Success";
 
 const Polls = () => {
   const [allPolls, setAllPolls] = useState([]);
@@ -135,11 +138,10 @@ const Polls = () => {
           myPolls.length ?
           <div className="polls">
             {
-              myPolls.map((poll) => (
-              <div className="myPoll-list-item">
+              myPolls.map((poll, index) => (
+              <div className="myPoll-list-item" key={index}>
                 <Link to={"/poll/" + poll._id} className="myPoll-link">
 									<p className="myPoll-content">{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")}</p>
-									{/* <p className="author">{`- ${currentUserName}`}</p> */}
                 </Link>
                 <button type="button" className="remove" onClick={() => deletePoll(poll._id)}>
                   <span className="material-icons">delete_outline</span>
@@ -148,7 +150,7 @@ const Polls = () => {
               ))
             }
           </div> :
-          <p>Uh oh..No polls here, <Link to="/create">Create one</Link></p>
+          <NoPolls />
         }
         </>
       );
@@ -168,7 +170,7 @@ const Polls = () => {
               )
             }
           </div> :
-          <p>Uh oh..No polls here, <Link to="/create">Create one</Link></p>
+          <NoPolls />
         }
         </>
       );
@@ -183,16 +185,7 @@ const Polls = () => {
           loaded ?
             <>
               {/* <span className="error">{error}</span> */}
-							{
-								success.length ?
-									<div className="success">
-										<p>
-											<span class="material-icons tick">check_circle_outline</span>
-											{success}
-										</p>
-									</div>
-								: null
-							}
+              <Success success={success}/>
               <div className="btn-group">
                 <button className="btn-group-btn left-btn" name="myPolls" onClick={handleClick}>My polls</button>
                 <button className="btn-group-btn right-btn clicked" name="allPolls" onClick={handleClick}>All polls</button>

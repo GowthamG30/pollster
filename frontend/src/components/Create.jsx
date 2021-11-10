@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import Error from "./Error";
 import Navbar from "./Navbar";
+import Success from "./Success";
 
 const Create = () => {
   const [error, setError] = useState([]);
@@ -109,29 +111,9 @@ const Create = () => {
         ))}
 
         <button className="add" type="button" onClick={() => addOptions()}>Add Option</button><br/>
-        {
-          error.length ?
-            <div className="error">
-              {error.map((err) => 
-                <p>
-                  <span class="material-icons warning">warning_amber</span>
-                  {err}
-                </p>
-              )}
-            </div>
-          : null
-        }
+        <Error error={error}/>
         <button className="submit" type="submit">Create</button>
-        {
-          success.length ?
-            <div className="success">
-              <p>
-                <span class="material-icons tick">check_circle_outline</span>
-                {success}
-              </p>
-            </div>
-          : null
-				}
+        <Success success={success}/>
       </form>
     </>
   );

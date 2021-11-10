@@ -27,10 +27,17 @@ const Stats = () => {
     axios
       .get("/api/poll/" + id, requestOptions)
       .then(res => {
+        if(res.data.poll.question.length > 50) {
+          setQuestion(res.data.poll.question.substr(0, 50) + "...");
+        }
         setQuestion(res.data.poll.question);
         const options = res.data.poll.options;
         options.forEach(element => {
-          setNames((prevNames) => [...prevNames, element.name]);
+          let value = element.name;
+          if(value.length > 20) {
+            value = value.substr(0, 20) + "...";
+          }
+          setNames((prevNames) => [...prevNames, value]);
           setCounts((prevCounts) => [...prevCounts, element.count]);
         });
         setLoaded(true);

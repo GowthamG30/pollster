@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect, useParams } from "react-router-dom";
 import axios from "axios";
+import Error from "./Error";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
+import Success from "./Success";
 
 const Poll = () => {
   const [currentUserName, setCurrentUserName] = useState("");
@@ -125,7 +127,7 @@ const Poll = () => {
 										{
 											poll.options.map((option, index) => {
 												return (
-													<label className="poll-option-label">
+													<label className="poll-option-label" key={index}>
 														<input
 															type="radio"
 															value={index}
@@ -138,29 +140,9 @@ const Poll = () => {
 											})
 										}
 									</div>
-									{
-										error.length ?
-											<div className="error">
-												{error.map((err) => 
-													<p>
-														<span class="material-icons warning">warning_amber</span>
-														{err}
-													</p>
-												)}
-											</div>
-										: null
-									}
+                  <Error error={error}/>
 									<button className="button submit" type="submit">Vote</button>
-									{
-										success.length ?
-											<div className="success">
-												<p>
-													<span class="material-icons tick">check_circle_outline</span>
-													{success}
-												</p>
-											</div>
-										: null
-									}
+                  <Success success={success}/>
 								</form>
 							}
 						</>

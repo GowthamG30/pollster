@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import Error from "./Error";
 import Navbar from "./Navbar";
+import Success from "./Success";
 
 const Login = () => {
   const [error, setError] = useState([]);
@@ -66,34 +68,14 @@ const Login = () => {
     <>
       <Navbar />
 			<div className="login-page container">
-				<h1 className="big-heading">Login here!</h1>
+				<h1 className="login-heading">Login here!</h1>
 				<form className="login-form" onSubmit={handleSubmit}>
 					<input className="login-input login-input-top" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
 					<input className="login-input login-input-bottom" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
 					<p>New user? <Link to="/register">Register here</Link></p>
-          {
-            error.length ?
-              <div className="error">
-                {error.map((err) => 
-                  <p>
-                    <span class="material-icons warning">warning_amber</span>
-                    {err}
-                  </p>
-                )}
-              </div>
-            : null
-          }
+          <Error error={error}/>
 					<button className="login-button" type="submit">Login</button>
-          {
-            success.length ?
-              <div className="success">
-                <p>
-                  <span class="material-icons tick">check_circle_outline</span>
-                  {success}
-                </p>
-              </div>
-            : null
-          }
+          <Success success={success}/>
 				</form>
 			</div>
     </>

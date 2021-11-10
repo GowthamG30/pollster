@@ -1,13 +1,19 @@
 import React from "react";
+import Features from "./Features";
 import Navbar from "./Navbar";
 
 const Dashboard = () => {
-  return (
+	return (
     <>
       <Navbar />
-      <div className="container">
-        <h3>This is Dashboard.</h3>
-      </div>
+			<div className="container">
+				<div className="home-section">
+						<div className="home-left-section">
+							<h1 className="big-heading">Know the opinion of your audience with a simple poll!</h1>
+						</div>
+					</div>
+				<Features />
+			</div>
     </>
   );
 };

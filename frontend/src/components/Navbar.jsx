@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import Nav from "./Nav";
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [currentUserName, setCurrentUser] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -29,6 +29,7 @@ const Navbar = () => {
           setCurrentUser(res.data);
           setIsAuthenticated(true);
           setLoaded(true);
+          // if(props.setHomeLoaded) props.setHomeLoaded(true);
         })
         .catch(err => {
           // console.error("Navbar err:" + err);
@@ -36,11 +37,13 @@ const Navbar = () => {
             setRedirect(true);
           }
           setLoaded(true);
+          // if(props.setHomeLoaded) props.setHomeLoaded(true);
         });
     }
     else if(commonPaths.includes(currentPath)) {
       setIsAuthenticated(true);
       setLoaded(true);
+      // if(props.setHomeLoaded) props.setHomeLoaded(true);
     }
   }, []);
 
@@ -49,26 +52,26 @@ const Navbar = () => {
   if(isAuthenticated) { // If user is authenticated
     navList = (
       <ul className="nav-list">
-        <li className="nav-item user">
+        <li className="nav-link user">
           {currentUserName}
         </li>
-        <li className="nav-item">
-					<Link to="/create">
+        <li>
+					<Link to="/create" className="plus">
             <span class="material-icons-outlined">add</span>
 					</Link>
 				</li>
-				<li className="nav-item">
-					<Link to="/polls">
+				<li>
+					<Link to="/polls" className="nav-link">
 						Polls
 					</Link>
 				</li>
-				<li className="nav-item">
-					<Link to="/about">
+				<li>
+					<Link to="/about" className="nav-link">
 						About
 					</Link>
 				</li>
-        <li className="nav-item">
-					<Link to="/" onClick={() => {localStorage.removeItem("accessToken");}}>
+        <li>
+					<Link to="/"  className="nav-link" onClick={() => {localStorage.removeItem("accessToken");}}>
 						Logout
 					</Link>
 				</li>
@@ -78,18 +81,18 @@ const Navbar = () => {
   else {
     navList = (
       <ul className="nav-list">
-				<li className="nav-item">
-					<Link to="/login">
+				<li>
+					<Link to="/login" className="nav-link">
 						Login
 					</Link>
 				</li>
-				<li className="nav-item">
-					<Link to="/register">
+				<li>
+					<Link to="/register" className="nav-link">
 						Register
 					</Link>
 				</li>
-        <li className="nav-item">
-					<Link to="/about">
+        <li>
+					<Link to="/about" className="nav-link">
 						About
 					</Link>
 				</li>
