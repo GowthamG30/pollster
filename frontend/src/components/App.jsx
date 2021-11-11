@@ -16,15 +16,15 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/" exact component={Dashboard} />
-        <Route path="/home" exact component={Home} />
-        <Route path="/register" exact component={Register} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/polls" exact component={Polls} />
-        <Route path="/about" exact component={About} />
-        <Route path="/create" exact component={Create} />
-        <Route path="/poll/:id" exact component={Poll} />
-        <Route path="/poll/:id/stats" exact component={Stats} />
+        <Route exact path="/" component={Dashboard} />
+        <Route exact path="/home" component={Home} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/polls" component={Polls} />
+        <Route exact path="/about" component={About} />
+        <Route exact path="/create" component={Create} />
+        <Route exact path="/poll/:id" component={Poll} />
+        <Route exact path="/poll/:id/stats" component={Stats} />
 				<Route component={NotFound}/>
       </Switch>
       <Footer />

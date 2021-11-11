@@ -29,21 +29,20 @@ const Navbar = (props) => {
           setCurrentUser(res.data);
           setIsAuthenticated(true);
           setLoaded(true);
-          // if(props.setHomeLoaded) props.setHomeLoaded(true);
+          if(props.setHomeLoaded) props.setHomeLoaded(true);
         })
         .catch(err => {
-          // console.error("Navbar err:" + err);
           if(!commonPaths.includes(currentPath)) {
             setRedirect(true);
           }
           setLoaded(true);
-          // if(props.setHomeLoaded) props.setHomeLoaded(true);
+          if(props.setHomeLoaded) props.setHomeLoaded(true);
         });
     }
     else if(commonPaths.includes(currentPath)) {
       setIsAuthenticated(true);
       setLoaded(true);
-      // if(props.setHomeLoaded) props.setHomeLoaded(true);
+      if(props.setHomeLoaded) props.setHomeLoaded(true);
     }
   }, []);
 

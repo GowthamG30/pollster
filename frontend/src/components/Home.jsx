@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <Navbar setHomeLoaded={setHomeLoaded}/>
 			{
-				/* homeLoaded */ 1 ?
+				homeLoaded ?
 					<div className="container">
 						<div className="home-section">
 							<div className="home-left-section">

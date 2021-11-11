@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import Error from "./Error";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
 import NoPolls from "./NoPolls";
@@ -10,7 +9,6 @@ import Success from "./Success";
 const Polls = () => {
   const [allPolls, setAllPolls] = useState([]);
   const [currentUserName, setCurrentUserName] = useState("");
-  // const [error, setError] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [myPolls, setMyPolls] = useState([]);
   const [showMyPolls, setShowMyPolls] = useState(false);
@@ -184,7 +182,6 @@ const Polls = () => {
 				{
           loaded ?
             <>
-              {/* <span className="error">{error}</span> */}
               <Success success={success}/>
               <div className="btn-group">
                 <button className="btn btn-group-btn left-btn" name="myPolls" onClick={handleClick}>My polls</button>
