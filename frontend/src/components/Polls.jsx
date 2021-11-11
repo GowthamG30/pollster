@@ -149,7 +149,7 @@ const Polls = () => {
                 <Link to={"/poll/" + poll._id} className="myPoll-link">
 									<p className="myPoll-content">{poll.question === "" ? "Empty question" : (poll.question.length<=100 ? poll.question : poll.question.substr(0, 100)+"...")}</p>
                 </Link>
-                <button type="button" className="remove" onClick={() => deletePoll(poll._id)}>
+                <button type="button" className="btn remove" onClick={() => deletePoll(poll._id)}>
                   <span className="material-icons">delete_outline</span>
                 </button>
               </div>
@@ -193,8 +193,8 @@ const Polls = () => {
               {/* <span className="error">{error}</span> */}
               <Success success={success}/>
               <div className="btn-group">
-                <button className="btn-group-btn left-btn" name="myPolls" onClick={handleClick}>My polls</button>
-                <button className="btn-group-btn right-btn clicked" name="allPolls" onClick={handleClick}>All polls</button>
+                <button className="btn btn-group-btn left-btn" name="myPolls" onClick={handleClick}>My polls</button>
+                <button className="btn btn-group-btn right-btn clicked" name="allPolls" onClick={handleClick}>All polls</button>
               </div>
               {getPolls()}
             </> :

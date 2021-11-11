@@ -61,7 +61,7 @@ const Navbar = (props) => {
           {currentUserName}
         </li>
         <li>
-					<Link to="/create" className="plus">
+					<Link to="/create" className="nav-link plus">
             <span class="material-icons-outlined">add</span>
 					</Link>
 				</li>

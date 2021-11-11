@@ -19,7 +19,7 @@ const Home = () => {
 							<div className="home-left-section">
 								<h1 className="big-heading">Know the opinion of your audience with a simple poll!</h1>
 							</div>
-							<Link to="/create" className="create-button">
+							<Link to="/create" className="btn btn-orange create-button">
 									Create Poll!
 							</Link>
 						</div>

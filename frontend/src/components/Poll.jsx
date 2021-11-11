@@ -120,7 +120,7 @@ const Poll = () => {
 					loaded ?
 						<>
 							<div className="btn-group">
-								<Link to={"/poll/"+id+"/stats"} className="stats-btn">
+								<Link to={"/poll/"+id+"/stats"} className="btn btn-orange stats-btn">
 									Stats
 							  </Link>
               </div>
@@ -128,7 +128,7 @@ const Poll = () => {
               poll.question === "" && poll.options[0].name === "" && poll.options[0].count === 0 ?
                 <h5>Empty poll...</h5> :
 								<form onSubmit={handleSubmit}>
-									<div className="form-body">
+									<div className="poll-form">
 										<p className="poll-question">{poll.question}</p>
 										{
 											poll.options.map((option, index) => {
@@ -147,7 +147,7 @@ const Poll = () => {
 										}
 									</div>
                   <Error error={error}/>
-									<button className="button submit" type="submit">Vote</button>
+									<button className="btn btn-orange submit" type="submit">Vote</button>
                   <Success success={success}/>
 								</form>
 							}
