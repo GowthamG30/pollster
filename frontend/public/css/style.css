@@ -406,7 +406,7 @@ a:hover {
 }
 
 .poll-content {
-	flex-basis: 75%;
+	flex-basis: 65%;
 }
 
 .author {
@@ -437,7 +437,7 @@ a:hover {
 	}
 
 	.poll-link {
-		width: 80%;
+		width: 100%;
 	}
 }
 
@@ -556,7 +556,7 @@ footer {
 /* Error / Success*/
 .msg {
 	border-radius: 4px;
-	margin: 0 auto 1rem auto;
+	margin: 1rem auto 1rem auto;
 	padding: 1rem;
 	width: 30%;
 }
