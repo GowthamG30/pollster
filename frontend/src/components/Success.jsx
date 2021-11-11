@@ -5,7 +5,7 @@ const Success = (props) => {
     <>
     {
       props.success.length ?
-        <div className="success">
+        <div className="msg success">
           <p>
             <span class="material-icons tick">check_circle_outline</span>
             {props.success}

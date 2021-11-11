@@ -5,7 +5,7 @@ const Error = (props) => {
     <>
     {
       props.error.length ?
-        <div className="error">
+        <div className="msg error">
           {props.error.map((err, index) => 
             <p key={index}>
               <span class="material-icons warning">warning_amber</span>

@@ -68,13 +68,13 @@ const Register = () => {
     <>
       <Navbar />
       <div className="container login-page">
-        <h1 className="login-heading">Register here!</h1>
+        <h1 className="big-heading">Register here!</h1>
         <form className="login-form" onSubmit={handleSubmit}>
-          <input className="login-input login-input-top" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
-          <input className="login-input login-input-bottom" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
+          <input className="text-input login-input login-input-top" type="text" value={username || ""} placeholder="Username" autoComplete="off" onChange={event => handleUsername(event)} />
+          <input className="text-input login-input login-input-bottom" type="password" value={password || ""} placeholder="Password" autoComplete="off" onChange={event => handlePassword(event)} />
           <p>Already a user? <Link to="/login">Login here</Link></p>
           <Error error={error}/>
-          <button className="login-button" type="submit">Register</button>
+          <button className="btn btn-orange login-button" type="submit">Register</button>
           <Success success={success}/>
         </form>
       </div>

@@ -142,8 +142,8 @@ const Stats = () => {
       <Navbar />
 			<div className="container">
 				<div className="btn-group">
-					<button className="btn-group-btn left-btn clicked" name="Bar" onClick={handleClick}>Bar</button>
-					<button className="btn-group-btn right-btn" name="Pie" onClick={handleClick}>Pie</button>
+					<button className="btn btn-group-btn left-btn clicked" name="Bar" onClick={handleClick}>Bar</button>
+					<button className="btn btn-group-btn right-btn" name="Pie" onClick={handleClick}>Pie</button>
 				</div>
 				{
 					loaded ?
