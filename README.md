@@ -6,33 +6,37 @@ This is a simple polling web application that helps people to create polls and t
 
 NodeJS with version atleast v14.17.0 is required. Refer [this](https://nodejs.org/en/) for installation.
 
-## Cloning and Running the Application in local system
+## Cloning and installing dependencies
 
 Clone the project into local
 ```console
 git clone https://github.com/GowthamG30/pollster.git
 ```
 
-In the project directory `pollster/`, run this command in the terminal to install all npm packages for backend.
+<!-- In the project directory `pollster/`, run this command in the terminal to install all npm packages for backend. -->
+Run the following command in the terminal in both `pollster/` and `pollster/frontend/` directories in order to install all npm packages for backend and frontend respectively.
 
 ```console
 npm install
 ```
 
-Run the same above command in `pollster/frontend/` folder to install all npm packages for frontend.
+## Running the Application in local system
 
-In order to run the application in development mode, type the following command
+Make sure the ports 3000 and 5000 are not occupied in localhost.
+
+To start the backend, run the following command in `pollster/` directory
+
+```console
+node server.js
+```
+
+To start the frontend, run the following command in another terminal, in `pollster/frontend` directory
 
 ```console
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The project will automatically open in [http://localhost:3000](http://localhost:3000) in your default browser
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
-
-<!-- ### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance. -->
