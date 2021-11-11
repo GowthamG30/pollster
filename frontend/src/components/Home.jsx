@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Features from "./Features";
 import Navbar from "./Navbar";
 
+// This is the landing page to be displayed if a user has logged in.
+// It contains a gist of the web application and relevant options like Create, Polls, About, Logout.
+
 const Home = () => {
 	const [homeLoaded, setHomeLoaded] = useState(false);
 

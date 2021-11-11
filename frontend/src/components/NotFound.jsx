@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom"; 
 import Nav from "./Nav";
 
+// This page is rendered if the user tries to access a page which is not present in the application.
+
 const NotFound = () => {
   return (
     <>

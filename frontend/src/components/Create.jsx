@@ -5,6 +5,8 @@ import Error from "./Error";
 import Navbar from "./Navbar";
 import Success from "./Success";
 
+// This page helps the user to create polls, which contains questions and options.
+
 const Create = () => {
   const [error, setError] = useState([]);
   const [options, setOptions] = useState([""]);
@@ -54,6 +56,7 @@ const Create = () => {
       options: options
     });
 
+    // Send access token through authorization header
     let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
 		
@@ -63,6 +66,7 @@ const Create = () => {
     }
 		JSON.stringify(requestOptions);
     
+    // Pass poll data to the server
     axios
       .post("/api/create", params, requestOptions)
       .then(res => {

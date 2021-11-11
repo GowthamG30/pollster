@@ -7,6 +7,8 @@ import Navbar from "./Navbar";
 import NoPolls from "./NoPolls";
 import Success from "./Success";
 
+// This page contains all the polls by default where each poll is truncated to atmost first 100 characters of the question.
+
 const Polls = () => {
   const [allPolls, setAllPolls] = useState([]);
   const [currentUserName, setCurrentUserName] = useState("");
@@ -17,7 +19,7 @@ const Polls = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-		// JWT verification for API request
+		// Send access token through authorization header
     let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
 		
@@ -27,6 +29,7 @@ const Polls = () => {
     }
 		JSON.stringify(requestOptions);
 
+    // Get all polls data
     axios
       .get("/api/polls", requestOptions)
       .then(res => {
@@ -64,6 +67,7 @@ const Polls = () => {
     return ch === ch.toLowerCase();
   };
 
+  // Compares two strings and returns the first index where they differ
   const compare = (a, b) => {
     const len_a = a.length, len_b = b.length;
     let i = 0, j = 0;
@@ -86,6 +90,7 @@ const Polls = () => {
   }
 
   const deletePoll = id => {
+    // Send access token through authorization header
     let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
 		
@@ -95,6 +100,7 @@ const Polls = () => {
     }
 		JSON.stringify(requestOptions);
 
+    // Delete a poll
     axios
       .delete("/api/poll/" + id, requestOptions)
       .then(res => {

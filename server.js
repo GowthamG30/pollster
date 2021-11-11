@@ -35,6 +35,7 @@ const authenticateToken = (req, res, next) => {
     return res.status(401).send("Unauthorized access");
   }
 
+  // Veify the token of the user
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
     if(err) {
       console.error(err);
@@ -72,7 +73,8 @@ app.post("/api/register", (req, res) => {
             username: req.body.username,
             password: hashPassword
           });
-  
+          
+          // Save user to database
           user.save((err_save) => {
             if(err_save) {
               console.error(err_save);
@@ -93,6 +95,7 @@ app.post("/api/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
+  // Check if username exists
   User.findOne({username: username}, (err, foundUser) => {
     if(err) {
       console.error(err);
@@ -100,6 +103,7 @@ app.post("/api/login", (req, res) => {
     }
     else {
       if(foundUser) {
+        // Compare password
         bcrypt.compare(password, foundUser.password, (err_cmp, result) => {
 					if(err_cmp) {
             console.error(err_cmp);
@@ -136,6 +140,7 @@ app.post("/api/create", authenticateToken, (req, res) => {
     voters: [],
   });
   
+  // Save poll data to database
   newPoll.save((err) => {
     if(err) {
       console.error(err);
@@ -150,6 +155,7 @@ app.post("/api/create", authenticateToken, (req, res) => {
 // Get all polls
 app.get("/api/polls", authenticateToken, (req, res) => {
   const currentUserName = req.currentUserName;
+  // Find all polls
   Poll.find({}, (err, foundPolls) => {
     if(err) {
       console.error(err);
@@ -169,6 +175,7 @@ app.route("/api/poll/:id")
   .get(authenticateToken, (req, res) => {
     const currentUserName = req.currentUserName;
     const id = req.params.id;
+    // Find the poll by its id
     Poll.findById(id, (err, foundPoll) => {
       if(err) {
         console.error(err);
@@ -185,6 +192,7 @@ app.route("/api/poll/:id")
   // Delete a poll
   .delete(authenticateToken, (req, res) => {
     const id = req.params.id;
+    // Delete a poll by its id
     Poll.deleteOne({_id: id}, (err, deletedPoll) => {
       if(err) {
         console.error(err);
@@ -204,6 +212,7 @@ app.post("/api/vote/:id", authenticateToken, (req, res) => {
   const index = req.body.index;
   const newOptions = poll.options;
   newOptions[index].count++;
+  // Update the poll data
   Poll.findByIdAndUpdate(id, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
     if(err) {
 			console.error(err);

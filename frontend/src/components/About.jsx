@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "./Navbar";
 
+// This is a static page used to display information about the web application and its creators.
+
 const About = () => {
   return (
     <>

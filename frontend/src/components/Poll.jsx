@@ -6,6 +6,8 @@ import Loader from "./Loader";
 import Navbar from "./Navbar";
 import Success from "./Success";
 
+// This page is used to view the question and options of each poll clearly and also vote for that poll.
+
 const Poll = () => {
   const [currentUserName, setCurrentUserName] = useState("");
   const [error, setError] = useState([]);
@@ -17,6 +19,7 @@ const Poll = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    // Send access token through authorization header
     let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
 		
@@ -26,6 +29,7 @@ const Poll = () => {
     }
 		JSON.stringify(requestOptions);
 
+    // Get the poll data
     axios
       .get("/api/poll/" + id, requestOptions)
       .then(res => {
@@ -58,6 +62,7 @@ const Poll = () => {
       });
 
       if(!poll.voters.includes(currentUserName)) {
+        // Send access token through authorization header
         let requestOptions = {headers: {}};
         requestOptions.headers["content-type"] = "application/json";
         
@@ -67,6 +72,7 @@ const Poll = () => {
         }
         JSON.stringify(requestOptions);
         
+        // Vote for a poll
         axios
           .post("/api/vote/" + id, params, requestOptions)
           .then(res => {

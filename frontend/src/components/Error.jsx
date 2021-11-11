@@ -1,5 +1,8 @@
 import React from "react";
 
+// This component is used to print any error messages of a page present in the error buffer
+// which are accumulated whenever there is a requirement.
+
 const Error = (props) => {
   return (
     <>

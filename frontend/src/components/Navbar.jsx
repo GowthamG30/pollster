@@ -3,6 +3,9 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import Nav from "./Nav";
 
+// This component is rendered in almost every other component.
+// It is the header of each page and contains the links to various other pages.
+
 const Navbar = (props) => {
   const [currentUserName, setCurrentUser] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,6 +15,7 @@ const Navbar = (props) => {
   const excludePaths = ["/", "/login", "/register"];
 
 	useEffect(() => {
+    // Send access token through authorization header
     let accessToken = localStorage.getItem("accessToken");
     let requestOptions = null;
 
@@ -23,6 +27,7 @@ const Navbar = (props) => {
     const currentPath = window.location.pathname;
 
     if(!excludePaths.includes(currentPath)) {
+      // Verify the user
       axios
         .get("/api/verify", requestOptions)
         .then(res => {
@@ -110,7 +115,7 @@ const Navbar = (props) => {
   }
 
   return (
-    loaded || excludePaths.includes(window.location.pathname) ? // except about, all good ig 
+    loaded || excludePaths.includes(window.location.pathname) ? 
       <nav className="navbar">
         <Link to={isAuthenticated ? "/home" : "/"} className="logo">
           Pollster 
@@ -119,7 +124,7 @@ const Navbar = (props) => {
         {/* Hamburger */}
         <span className="material-icons hamburger" onClick={handleClick}>menu</span>
 
-        {navList /* menu */}
+        {navList /* Display menu */}
       </nav> :
     <Nav />
   );

@@ -5,6 +5,8 @@ import axios from "axios";
 import Loader from "./Loader";
 import Navbar from "./Navbar";
 
+// This page is used to view the current results of the poll.
+
 const Stats = () => {
   const [counts, setCounts] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -14,7 +16,7 @@ const Stats = () => {
   const { id } = useParams();
 
   useEffect(() => {
-		// JWT verification for API request
+	  // Send access token through authorization header
     let requestOptions = {headers: {}};
     requestOptions.headers["content-type"] = "application/json";
     
@@ -24,6 +26,7 @@ const Stats = () => {
     }
     JSON.stringify(requestOptions);
 
+    // Get the poll data
     axios
       .get("/api/poll/" + id, requestOptions)
       .then(res => {
