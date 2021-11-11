@@ -40,3 +40,12 @@ The project will automatically open in [http://localhost:3000](http://localhost:
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+## Note
+
+You must make an `.env` file and place it in `pollster/` directory.  Note that this information is sensitive and important. It consists of:
+
+> JWT_SECRET_KEY - A random string used to encode the payload into JWT. Ex: `abcdebfdbabdeb24592ebfa`\
+> MONGO_URI - URI of the cluster, present in MongoDB Atlas. Ex: `mongodb://mongodb0.example.com:27017`\
+> SALT_ROUNDS - Number of salt rounds required to hash password using “bcrypt.js”. Ex: `10`\
+> TOKEN_LIFE - Lifetime of a JSON Web Token. Ex: `60s`, or `10h` or `7d`
