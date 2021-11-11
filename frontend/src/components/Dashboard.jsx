@@ -7,8 +7,8 @@ import Navbar from "./Navbar";
 
 const Dashboard = () => {
 	return (
-    <>
-      <Navbar />
+		<>
+			<Navbar />
 			<div className="container">
 				<div className="home-section">
 						<div className="home-left-section">
@@ -17,8 +17,8 @@ const Dashboard = () => {
 					</div>
 				<Features />
 			</div>
-    </>
-  );
+		</>
+	);
 };
 
 export default Dashboard;

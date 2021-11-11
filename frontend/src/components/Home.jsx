@@ -10,8 +10,8 @@ const Home = () => {
 	const [homeLoaded, setHomeLoaded] = useState(false);
 
 	return (
-    <>
-      <Navbar setHomeLoaded={setHomeLoaded}/>
+		<>
+			<Navbar setHomeLoaded={setHomeLoaded}/>
 			{
 				homeLoaded ?
 					<div className="container">
@@ -27,8 +27,8 @@ const Home = () => {
 					</div>
 				: null
 			}
-    </>
-  );
+		</>
+	);
 };
 
 export default Home;

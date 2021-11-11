@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 // It is used to display when the nav-list is loading.
 
 const Nav = () => {
-  return (
-    <nav className="navbar">
-      <Link to="/" className="logo">
-        Pollster
+	return (
+		<nav className="navbar">
+			<Link to="/" className="logo">
+				Pollster
 			</Link>
-    </nav>
-  );
+		</nav>
+	);
 };
 
 export default Nav;

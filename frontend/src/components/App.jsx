@@ -16,23 +16,23 @@ import Stats from "./Stats";
 // The footer is also rendered here.
 
 const App = () => {
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Dashboard} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/polls" component={Polls} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/create" component={Create} />
-        <Route exact path="/poll/:id" component={Poll} />
-        <Route exact path="/poll/:id/stats" component={Stats} />
+	return (
+		<Router>
+			<Switch>
+				<Route exact path="/" component={Dashboard} />
+				<Route exact path="/home" component={Home} />
+				<Route exact path="/register" component={Register} />
+				<Route exact path="/login" component={Login} />
+				<Route exact path="/polls" component={Polls} />
+				<Route exact path="/about" component={About} />
+				<Route exact path="/create" component={Create} />
+				<Route exact path="/poll/:id" component={Poll} />
+				<Route exact path="/poll/:id/stats" component={Stats} />
 				<Route component={NotFound}/>
-      </Switch>
-      <Footer />
-    </Router>
-  );
+			</Switch>
+			<Footer />
+		</Router>
+	);
 };
 
 export default App;

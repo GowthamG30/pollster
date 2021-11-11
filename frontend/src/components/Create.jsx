@@ -8,37 +8,37 @@ import Success from "./Success";
 // This page helps the user to create polls, which contains questions and options.
 
 const Create = () => {
-  const [error, setError] = useState([]);
-  const [options, setOptions] = useState([""]);
-  const [question, setQuestion] = useState("");
-  const [redirect, setRedirect] = useState(false);
-  const [success, setSuccess] = useState("");
+	const [error, setError] = useState([]);
+	const [options, setOptions] = useState([""]);
+	const [question, setQuestion] = useState("");
+	const [redirect, setRedirect] = useState(false);
+	const [success, setSuccess] = useState("");
 
-  const handleOptions = (index, event) => {
-    const newOptions = [...options];
-    newOptions[index] = event.target.value;
-    setOptions(newOptions);
-  };
+	const handleOptions = (index, event) => {
+		const newOptions = [...options];
+		newOptions[index] = event.target.value;
+		setOptions(newOptions);
+	};
 
-  const handleQuestion = (event) => {
-    setQuestion(event.target.value);
-  };
+	const handleQuestion = (event) => {
+		setQuestion(event.target.value);
+	};
 
-  const addOptions = () => {
-    setOptions([...options, ""]);
-  };
+	const addOptions = () => {
+		setOptions([...options, ""]);
+	};
 
-  const removeOptions = (index) => {
-    const newOptions = [...options];
-    newOptions.splice(index, 1);
-    setOptions(newOptions);
-  };
+	const removeOptions = (index) => {
+		const newOptions = [...options];
+		newOptions.splice(index, 1);
+		setOptions(newOptions);
+	};
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+	const handleSubmit = (event) => {
+		event.preventDefault();
 		let errorBuffer = [];
 
-    // Validate Inputs
+		// Validate Inputs
 		if(!question)
 			errorBuffer.push("Question should not be left empty");
 		
@@ -51,51 +51,51 @@ const Create = () => {
 			return;
 		}
 
-    const params = JSON.stringify({
+		const params = JSON.stringify({
 			question: question,
-      options: options
-    });
+			options: options
+		});
 
-    // Send access token through authorization header
-    let requestOptions = {headers: {}};
+		// Send access token through authorization header
+		let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
 		
 		let accessToken = localStorage.getItem("accessToken");
-    if(accessToken) {
+		if(accessToken) {
 			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
-    }
+		}
 		JSON.stringify(requestOptions);
-    
-    // Pass poll data to the server
-    axios
-      .post("/api/create", params, requestOptions)
-      .then(res => {
-        setSuccess("Poll created!");
-        setTimeout(() => {
-          setRedirect(true);
-        }, 750);
+		
+		// Pass poll data to the server
+		axios
+			.post("/api/create", params, requestOptions)
+			.then(res => {
+				setSuccess("Poll created!");
+				setTimeout(() => {
+					setRedirect(true);
+				}, 750);
 			})
-      .catch(err => {
-        if(err.response.status === 403) {
-          alert("Session expired");
-          window.location.reload();
-        }
-        else if(err.response.status === 500) {
-          alert("Internal server error");
-        }
-        else {
-          alert("Something went wrong");
-        }
-      });
-  };
+			.catch(err => {
+				if(err.response.status === 403) {
+					alert("Session expired");
+					window.location.reload();
+				}
+				else if(err.response.status === 500) {
+					alert("Internal server error");
+				}
+				else {
+					alert("Something went wrong");
+				}
+			});
+	};
 
-  if(redirect) {
-    return <Redirect to="/polls"/>;
-  }
+	if(redirect) {
+		return <Redirect to="/polls"/>;
+	}
 
-  return (
-    <>
-      <Navbar />
+	return (
+		<>
+			<Navbar />
 			<div className="container">
 				<form className="create-form" onSubmit={handleSubmit}>
 					<p className="create-label">Question:</p>
@@ -121,8 +121,8 @@ const Create = () => {
 					<Success success={success}/>
 				</form>
 			</div>
-    </>
-  );
+		</>
+	);
 };
 
 export default Create;

@@ -4,20 +4,20 @@ import React from "react";
 // which are accumulated whenever there is a requirement.
 
 const Success = (props) => {
-  return (
-    <>
-    {
-      props.success.length ?
-        <div className="msg success">
-          <p>
-            <span class="material-icons tick">check_circle_outline</span>
-            {props.success}
-          </p>
-        </div>
-      : null
-    }
-    </>
-  );
+	return (
+		<>
+		{
+			props.success.length ?
+				<div className="msg success">
+					<p>
+						<span class="material-icons tick">check_circle_outline</span>
+						{props.success}
+					</p>
+				</div>
+			: null
+		}
+		</>
+	);
 };
 
 export default Success;

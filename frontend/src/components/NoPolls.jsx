@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 // It also helps the user to create one, if he/she wants to.
 
 const NoPolls = () => {
-  return (
-    <div className="box">
-      <p>Uh oh...No polls here, <Link to="/create">Create one</Link></p>
-    </div>
-  );
+	return (
+		<div className="box">
+			<p>Uh oh...No polls here, <Link to="/create">Create one</Link></p>
+		</div>
+	);
 };
 
 export default NoPolls;

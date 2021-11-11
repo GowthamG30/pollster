@@ -8,63 +8,63 @@ import Navbar from "./Navbar";
 // This page is used to view the current results of the poll.
 
 const Stats = () => {
-  const [counts, setCounts] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-  const [names, setNames] = useState([]);
-  const [question, setQuestion] = useState("");
-  const [typeOfChart, setTypeOfChart] = useState(0);
-  const { id } = useParams();
+	const [counts, setCounts] = useState([]);
+	const [loaded, setLoaded] = useState(false);
+	const [names, setNames] = useState([]);
+	const [question, setQuestion] = useState("");
+	const [typeOfChart, setTypeOfChart] = useState(0);
+	const { id } = useParams();
 
-  useEffect(() => {
-	  // Send access token through authorization header
-    let requestOptions = {headers: {}};
-    requestOptions.headers["content-type"] = "application/json";
-    
-    let accessToken = localStorage.getItem("accessToken");
-    if(accessToken) {
-      requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
-    }
-    JSON.stringify(requestOptions);
+	useEffect(() => {
+		// Send access token through authorization header
+		let requestOptions = {headers: {}};
+		requestOptions.headers["content-type"] = "application/json";
+		
+		let accessToken = localStorage.getItem("accessToken");
+		if(accessToken) {
+			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
+		}
+		JSON.stringify(requestOptions);
 
-    // Get the poll data
-    axios
-      .get("/api/poll/" + id, requestOptions)
-      .then(res => {
-        if(res.data.poll.question.length > 50) {
-          setQuestion(res.data.poll.question.substr(0, 50) + "...");
-        }
-        setQuestion(res.data.poll.question);
-        const options = res.data.poll.options;
-        options.forEach(element => {
-          let value = element.name;
-          if(value.length > 20) {
-            value = value.substr(0, 20) + "...";
-          }
-          setNames((prevNames) => [...prevNames, value]);
-          setCounts((prevCounts) => [...prevCounts, element.count]);
-        });
-        setLoaded(true);
-      })
-      .catch(err => {
-        if(err.response.status === 403) {
-          alert("Session expired");
-          window.location.reload();
-        }
-        else if(err.response.status === 500) {
-          alert("Internal server error");
-        }
-        else {
-          alert("Something went wrong");
-        }
-      });
-  }, [id]);
+		// Get the poll data
+		axios
+			.get("/api/poll/" + id, requestOptions)
+			.then(res => {
+				if(res.data.poll.question.length > 50) {
+					setQuestion(res.data.poll.question.substr(0, 50) + "...");
+				}
+				setQuestion(res.data.poll.question);
+				const options = res.data.poll.options;
+				options.forEach(element => {
+					let value = element.name;
+					if(value.length > 20) {
+						value = value.substr(0, 20) + "...";
+					}
+					setNames((prevNames) => [...prevNames, value]);
+					setCounts((prevCounts) => [...prevCounts, element.count]);
+				});
+				setLoaded(true);
+			})
+			.catch(err => {
+				if(err.response.status === 403) {
+					alert("Session expired");
+					window.location.reload();
+				}
+				else if(err.response.status === 500) {
+					alert("Internal server error");
+				}
+				else {
+					alert("Something went wrong");
+				}
+			});
+	}, [id]);
 
-  const data = {
-    labels: names,
-    datasets: [{
-        label: "# of Votes",
-        data: counts,
-        borderWidth: 1,
+	const data = {
+		labels: names,
+		datasets: [{
+				label: "# of Votes",
+				data: counts,
+				borderWidth: 1,
 				backgroundColor: [
 					'rgba(255, 99, 132, 0.2)',
 					'rgba(54, 162, 235, 0.2)',
@@ -81,19 +81,19 @@ const Stats = () => {
 					'rgba(153, 102, 255, 1)',
 					'rgba(255, 159, 64, 1)',
 				],
-    }]
-  };
+		}]
+	};
 
-  const options = {		
+	const barOptions = {
 		maintainAspectRatio: false,	// Removes aspect ratio
 		responsive: true,	// Adjusts width and height according to container
-    scales: {
-      y: {
+		scales: {
+			y: {
 				ticks: {
 					precision: 0	// To remove decimal labels
 				}
-      }
-    },
+			}
+		},
 		plugins: {
 			legend: {
 				display: false	// Remove chart legend
@@ -103,7 +103,21 @@ const Stats = () => {
 				text: question,
 			}
 		}
-  };
+	}
+
+	const pieOptions = {
+		maintainAspectRatio: false,	// Removes aspect ratio
+		responsive: true,	// Adjusts width and height according to container
+		plugins: {
+			legend: {
+				display: true	// Show chart legend
+			},
+			title: {
+				display: true,
+				text: question,
+			}
+		}
+	}
 
 	const handleClick = (event) => {
 		if(event.target.name === "Bar") {
@@ -118,31 +132,31 @@ const Stats = () => {
 		}
 	}
 
-  const getChart = () => {
-    if(typeOfChart === 0) {
-      return (
-        <Bar
-          data={data}
-          options={options}
-        />
-      );
-    }
-    else if(typeOfChart === 1) {
-      return (
-        <Pie
-          data={data}
-          options={options}
-        />
-      );
-    }
-    else {
-      return (null);
-    }
-  };
+	const getChart = () => {
+		if(typeOfChart === 0) {
+			return (
+				<Bar
+					data={data}
+					options={barOptions}
+				/>
+			);
+		}
+		else if(typeOfChart === 1) {
+			return (
+				<Pie
+					data={data}
+					options={pieOptions}
+				/>
+			);
+		}
+		else {
+			return (null);
+		}
+	};
 
-  return (
-    <>
-      <Navbar />
+	return (
+		<>
+			<Navbar />
 			<div className="container">
 				<div className="btn-group">
 					<button className="btn btn-group-btn left-btn clicked" name="Bar" onClick={handleClick}>Bar</button>
@@ -158,8 +172,8 @@ const Stats = () => {
 					<Loader />
 				}
 			</div>
-    </>
-  );
+		</>
+	);
 };
 
 export default Stats;
