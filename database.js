@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
 
-//connct to mongodb atlas
+// Connect to mongoDB atlas
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}); // check these later
 
 const pollSchema = new mongoose.Schema({

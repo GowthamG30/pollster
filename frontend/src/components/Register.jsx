@@ -5,6 +5,8 @@ import Error from "./Error";
 import Navbar from "./Navbar";
 import Success from "./Success";
 
+// Register page
+
 const Register = () => {
   const [error, setError] = useState([]);
   const [password, setPassword] = useState("");
@@ -43,6 +45,7 @@ const Register = () => {
       "password": password
     });
 
+    // Register user
     axios
       .post("/api/register", params, {
         "headers": {

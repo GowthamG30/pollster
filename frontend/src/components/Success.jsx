@@ -1,5 +1,8 @@
 import React from "react";
 
+// This component is used to print any success messages of a page present in the success buffer
+// which are accumulated whenever there is a requirement.
+
 const Success = (props) => {
   return (
     <>

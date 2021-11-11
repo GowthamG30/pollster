@@ -12,6 +12,9 @@ import Polls from "./Polls";
 import Register from "./Register";
 import Stats from "./Stats";
 
+// This component is used to render the appropriate page based on the switch condition of react routes.
+// The footer is also rendered here.
+
 const App = () => {
   return (
     <Router>

@@ -2,6 +2,9 @@ import React from "react";
 import Features from "./Features";
 import Navbar from "./Navbar";
 
+// This is the landing page to be displayed if no user has logged in.
+// It contains a gist of the web application and options to login and register.
+
 const Dashboard = () => {
 	return (
     <>

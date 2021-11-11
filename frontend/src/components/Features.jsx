@@ -1,5 +1,7 @@
 import React from "react";
 
+// This component contains the gist of the web application and is used in Dashboard and Home pages.
+
 const Features = () => {
 	return (
     <div className="features">

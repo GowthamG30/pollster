@@ -5,6 +5,8 @@ import Error from "./Error";
 import Navbar from "./Navbar";
 import Success from "./Success";
 
+// Login page
+
 const Login = () => {
   const [error, setError] = useState([]);
   const [password, setPassword] = useState("");
@@ -42,6 +44,7 @@ const Login = () => {
       "password": password
     });
 
+    // Send username and password to the server
     axios
       .post("/api/login", params, {
         "headers": {
