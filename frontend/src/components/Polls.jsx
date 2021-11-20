@@ -20,11 +20,6 @@ const Polls = () => {
 		// Send access token through authorization header
 		let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
-		
-		let accessToken = localStorage.getItem("accessToken");
-		if(accessToken) {
-			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
-		}
 		JSON.stringify(requestOptions);
 
 		// Get all polls data
@@ -91,11 +86,6 @@ const Polls = () => {
 		// Send access token through authorization header
 		let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
-		
-		let accessToken = localStorage.getItem("accessToken");
-		if(accessToken) {
-			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
-		}
 		JSON.stringify(requestOptions);
 
 		// Delete a poll

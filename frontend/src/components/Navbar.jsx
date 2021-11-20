@@ -7,7 +7,7 @@ import Nav from "./Nav";
 // It is the header of each page and contains the links to various other pages.
 
 const Navbar = (props) => {
-	const [currentUserName, setCurrentUser] = useState("");
+	const [currentUserName, setCurrentUserName] = useState("");
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [loaded, setLoaded] = useState(false);
 	const [redirect, setRedirect] = useState(false);
@@ -16,22 +16,23 @@ const Navbar = (props) => {
 
 	useEffect(() => {
 		// Send access token through authorization header
-		let accessToken = localStorage.getItem("accessToken");
-		let requestOptions = null;
+		// let accessToken = localStorage.getItem("accessToken");
+		// let requestOptions = null;
 
-		if(accessToken) {
-			requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
-			JSON.stringify(requestOptions);
-		}
+		// if(accessToken) {
+		// 	requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
+		// 	JSON.stringify(requestOptions);
+		// }
 
 		const currentPath = window.location.pathname;
 
 		if(!excludePaths.includes(currentPath)) {
 			// Verify the user
 			axios
-				.get("/api/verify", requestOptions)
+				.get("/api/verify")
 				.then(res => {
-					setCurrentUser(res.data);
+					console.log("done");
+					setCurrentUserName(res.data);
 					setIsAuthenticated(true);
 					setLoaded(true);
 					if(props.setHomeLoaded) props.setHomeLoaded(true);
@@ -61,7 +62,7 @@ const Navbar = (props) => {
 				</li>
 				<li>
 					<Link to="/create" className="nav-link plus">
-						<span class="material-icons-outlined">add</span>
+						<span className="material-icons-outlined">add</span>
 					</Link>
 				</li>
 				<li>
@@ -75,7 +76,12 @@ const Navbar = (props) => {
 					</Link>
 				</li>
 				<li>
-					<Link to="/"  className="nav-link" onClick={() => {localStorage.removeItem("accessToken");}}>
+					<Link
+						to="/"
+						className="nav-link"
+						onClick={() => {
+							axios.get("/api/logout").then(res => console.log(res)).catch(err => console.log(err));
+						}}>
 						Logout
 					</Link>
 				</li>

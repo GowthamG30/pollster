@@ -51,7 +51,6 @@ const Login = () => {
 					"content-type": "application/json",
 				},})
 			.then(res => {
-				localStorage.setItem("accessToken", res.data.accessToken);
 				setSuccess("Login Successful");
 				setTimeout(() => {
 					setRedirect(true);

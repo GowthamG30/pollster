@@ -1,17 +1,36 @@
-const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const { Poll, User } = require("./database.js");
+const passport = require("passport");
 const port = process.env.PORT || 5000;
-const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
+const session = require("express-session");
 require("dotenv").config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// app.set("trust proxy", 1);
+app.use(session({
+  secret: process.env.SESSION_SECRET_KEY,
+  resave: false,
+  saveUninitialized: false,
+	cookie: {
+		// secure: true,
+		maxAge: 1000 * 60 * 60 * 1 // 1 hour
+	}
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+/*
 const generateAccessToken = (data) => {
 	const token = jwt.sign(data, process.env.JWT_SECRET_KEY, {expiresIn: process.env.TOKEN_LIFE});
 	return token;
@@ -35,155 +54,65 @@ const authenticateToken = (req, res, next) => {
 		next();
 	})
 };
+*/
 
 // Verify authentication in routes
-app.get("/api/verify", authenticateToken, (req, res) => {
-	res.send(req.currentUserName);
+app.get("/api/verify", (req, res) => {
+	if(req.isAuthenticated()) {
+		res.send(req.user.username);
+	}
+	else {
+		// Improve this later
+		res.status(403).send("Session expired");
+	}
 });
 
+// Register a new user
 app.post("/api/register", (req, res) => {
-	// Check if username already exists
-	User.findOne({username: req.body.username}, (err, user) => {
+	// Convenience method to register a new user instance with a given password. Checks if username is unique
+	User.register({username: req.body.username}, req.body.password, (err, user) => {
 		if(err) {
-			console.error(err);
-			res.status(500).send("Internal server error");
-		}
-		else if(user) {
+			console.log(err.message);
 			res.status(400).send("Username already exists");
 		}
 		else {
-			// Hash password
-			bcrypt.hash(req.body.password, saltRounds, (err_hash, hashPassword) => {
-				if(err_hash) {
-					console.error(err_hash);
-					res.status(500).send("Internal server error");
-				}
-				else {
-					const user = new User({
-						username: req.body.username,
-						password: hashPassword
-					});
-					
-					// Save user to database
-					user.save((err_save) => {
-						if(err_save) {
-							console.error(err_save);
-							res.status(500).send("Internal server error");
-						}
-						else {
-							res.end();
-						}
-					});
-				}
+			passport.authenticate("local")(req, res, () => {
+				res.end();
 			});
 		}
 	});
 });
 
 // Login
-app.post("/api/login", (req, res) => {
-	const username = req.body.username;
-	const password = req.body.password;
+app.post("/api/login", passport.authenticate("local", { failureRedirect: "/" }), (req, res) => {
+	res.end();
+	// res.status(401).send("Please provide a valid username and password.");
+});
 
-	// Check if username exists
-	User.findOne({username: username}, (err, foundUser) => {
-		if(err) {
-			console.error(err);
-			res.status(500).send("Internal server error");
-		}
-		else {
-			if(foundUser) {
-				// Compare password
-				bcrypt.compare(password, foundUser.password, (err_cmp, result) => {
-					if(err_cmp) {
-						console.error(err_cmp);
-						res.status(500).send("Internal server error");
-					}
-					else if(result) {	// Password matched
-						const accessToken = generateAccessToken({name: username});
-						res.send({username: username, accessToken: accessToken});
-					}
-					else {
-						res.status(401).send("Please provide a valid username and password.");
-					}
-				});
-			}
-			else {
-				res.status(401).send("Please provide a valid username and password.");
-			}
-		}
-	});
+// Logout
+app.get("/api/logout", (req, res) => {
+	req.logout();
+	res.end();
 });
 
 // Create a poll
-app.post("/api/create", authenticateToken, (req, res) => {
-	const currentUserName = req.currentUserName;
-	const options = [];
-	req.body.options.map((element) => {
-		options.push({name: element, count: 0});
-	});
-
-	const newPoll = new Poll({
-		question: req.body.question,
-		options: options,
-		author: currentUserName,
-		voters: [],
-	});
-	
-	// Save poll data to database
-	newPoll.save((err) => {
-		if(err) {
-			console.error(err);
-			res.status(500).send("Internal server error");
-		}
-		else {
-			res.end();
-		}
-	});
-});
-
-// Get all polls
-app.get("/api/polls", authenticateToken, (req, res) => {
-	const currentUserName = req.currentUserName;
-	// Find all polls
-	Poll.find({}, (err, foundPolls) => {
-		if(err) {
-			console.error(err);
-			res.status(500).send("Internal server error");
-		}
-		else {
-			res.json({
-				currentUserName: currentUserName,
-				polls: foundPolls
-			});
-		}
-	});
-});
-
-app.route("/api/poll/:id")
-	// Get a poll
-	.get(authenticateToken, (req, res) => {
-		const currentUserName = req.currentUserName;
-		const id = req.params.id;
-		// Find the poll by its id
-		Poll.findById(id, (err, foundPoll) => {
-			if(err) {
-				console.error(err);
-				res.status(500).send("Internal server error");
-			}
-			else {
-				res.json({
-					currentUserName: currentUserName,
-					poll: foundPoll
-				});
-			}
+app.post("/api/create", (req, res) => {
+	if(req.isAuthenticated()) {
+		const currentUserName = req.user.username;
+		const options = [];
+		req.body.options.map((element) => {
+			options.push({name: element, count: 0});
 		});
-	})
-	// Delete a poll
-	.delete(authenticateToken, (req, res) => {
-		const id = req.params.id;
-		// Delete a poll by its id
-		Poll.deleteOne({_id: id}, (err, deletedPoll) => {
+
+		const newPoll = new Poll({
+			question: req.body.question,
+			options: options,
+			author: currentUserName,
+			voters: [],
+		});
+		
+		// Save poll data to database
+		newPoll.save((err) => {
 			if(err) {
 				console.error(err);
 				res.status(500).send("Internal server error");
@@ -192,26 +121,102 @@ app.route("/api/poll/:id")
 				res.end();
 			}
 		});
+	}
+	else {
+		res.status(403).send("Session expired");
+	}
+});
+
+// Get all polls
+app.get("/api/polls", (req, res) => {
+	if(req.isAuthenticated()) {
+		const currentUserName = req.user.username;
+		// Find all polls
+		Poll.find({}, (err, foundPolls) => {
+			if(err) {
+				console.error(err);
+				res.status(500).send("Internal server error");
+			}
+			else {
+				res.json({
+					currentUserName: currentUserName,
+					polls: foundPolls
+				});
+			}
+		});
+	}
+	else {
+		res.status(403).send("Session expired");
+	}
+});
+
+app.route("/api/poll/:id")
+	// Get a poll
+	.get((req, res) => {
+		if(req.isAuthenticated()) {
+			const currentUserName = req.user.username;
+			const id = req.params.id;
+			// Find the poll by its id
+			Poll.findById(id, (err, foundPoll) => {
+				if(err) {
+					console.error(err);
+					res.status(500).send("Internal server error");
+				}
+				else {
+					res.json({
+						currentUserName: currentUserName,
+						poll: foundPoll
+					});
+				}
+			});
+		}
+		else {
+			res.status(403).send("Session expired");
+		}
+	})
+	// Delete a poll
+	.delete((req, res) => {
+		if(req.isAuthenticated()) {
+			const id = req.params.id;
+			// Delete a poll by its id
+			Poll.deleteOne({_id: id}, (err, deletedPoll) => {
+				if(err) {
+					console.error(err);
+					res.status(500).send("Internal server error");
+				}
+				else {
+					res.end();
+				}
+			});
+		}
+		else {
+			res.status(403).send("Session expired");
+		}
 	});
 
 // Vote a poll
-app.post("/api/vote/:id", authenticateToken, (req, res) => {
-	const currentUserName = req.currentUserName;
-	const id = req.params.id;
-	const poll = req.body.poll;
-	const index = req.body.index;
-	const newOptions = poll.options;
-	newOptions[index].count++;
-	// Update the poll data
-	Poll.findByIdAndUpdate(id, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
-		if(err) {
-			console.error(err);
-			res.status(500).send("Internal server error");
-		}
-		else {
-			res.end();
-		}
-	});
+app.post("/api/vote/:id", (req, res) => {
+	if(req.isAuthenticated()) {
+		const currentUserName = req.user.username;
+		const id = req.params.id;
+		const poll = req.body.poll;
+		const index = req.body.index;
+		const newOptions = poll.options;
+		newOptions[index].count++;
+		// Update the poll data
+		Poll.findByIdAndUpdate(id, {options: newOptions, $push: {voters: currentUserName}}, (err, doc) => {
+			if(err) {
+				console.error(err);
+				res.status(500).send("Internal server error");
+			}
+			else {
+				res.end();
+			}
+		});
+	}
+	else {
+		res.status(403).send("Session expired");
+	}
 });
 
 // Listen to a specific port

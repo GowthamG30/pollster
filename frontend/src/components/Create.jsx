@@ -59,11 +59,6 @@ const Create = () => {
 		// Send access token through authorization header
 		let requestOptions = {headers: {}};
 		requestOptions.headers["content-type"] = "application/json";
-		
-		let accessToken = localStorage.getItem("accessToken");
-		if(accessToken) {
-			requestOptions.headers["authorization"] = `Bearer ${accessToken}`;
-		}
 		JSON.stringify(requestOptions);
 		
 		// Pass poll data to the server
