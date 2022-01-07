@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import Error from "./Error";
 import Navbar from "./Navbar";
@@ -51,6 +51,7 @@ const Login = () => {
 					"content-type": "application/json",
 				},})
 			.then(res => {
+				console.log(res);
 				setSuccess("Login Successful");
 				setTimeout(() => {
 					setRedirect(true);
@@ -63,7 +64,7 @@ const Login = () => {
 	};
 
 	if(redirect) {
-		return <Redirect to="/home"/>;
+		return <Navigate to="/home" />;
 	}
 
 	return (

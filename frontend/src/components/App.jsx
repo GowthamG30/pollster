@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"; 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./About";
 import Create from "./Create";
 import Dashboard from "./Dashboard";
@@ -11,6 +11,7 @@ import Poll from "./Poll";
 import Polls from "./Polls";
 import Register from "./Register";
 import Stats from "./Stats";
+import Test from "./Test";
 
 // This component is used to render the appropriate page based on the switch condition of react routes.
 // The footer is also rendered here.
@@ -18,18 +19,19 @@ import Stats from "./Stats";
 const App = () => {
 	return (
 		<Router>
-			<Switch>
-				<Route exact path="/" component={Dashboard} />
-				<Route exact path="/home" component={Home} />
-				<Route exact path="/register" component={Register} />
-				<Route exact path="/login" component={Login} />
-				<Route exact path="/polls" component={Polls} />
-				<Route exact path="/about" component={About} />
-				<Route exact path="/create" component={Create} />
-				<Route exact path="/poll/:id" component={Poll} />
-				<Route exact path="/poll/:id/stats" component={Stats} />
-				<Route component={NotFound}/>
-			</Switch>
+			<Routes>
+				<Route exact path="/" element={<Dashboard />} />
+				<Route exact path="/home" element={<Home />} />
+				<Route exact path="/register" element={<Register />} />
+				<Route exact path="/login" element={<Login />} />
+				<Route exact path="/polls" element={<Polls />} />
+				<Route exact path="/about" element={<About />} />
+				<Route exact path="/create" element={<Create />} />
+				<Route exact path="/poll/:id" element={<Poll />} />
+				<Route exact path="/poll/:id/stats" element={<Stats />} />
+				{/* <Route exact path="/test" element={<Test />} /> */}
+				<Route element={<NotFound />} />
+			</Routes>
 			<Footer />
 		</Router>
 	);

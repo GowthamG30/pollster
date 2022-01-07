@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import Error from "./Error";
 import Navbar from "./Navbar";
@@ -64,7 +64,7 @@ const Register = () => {
 	};
 
 	if(redirect) {
-		return <Redirect to="/login"/>;
+		return <Navigate to="/login" />;
 	}
 
 	return (

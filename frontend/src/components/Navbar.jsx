@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import Nav from "./Nav";
 
@@ -116,7 +116,7 @@ const Navbar = (props) => {
 	}
 
 	if(redirect) {
-		return <Redirect to="/"/>;
+		return <Navigate to="/" />;
 	}
 
 	return (

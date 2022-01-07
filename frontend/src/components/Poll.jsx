@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Error from "./Error";
 import Loader from "./Loader";
@@ -95,7 +95,7 @@ const Poll = () => {
 	}
 
 	if(redirect) {
-		return <Redirect to={"../poll/" + id + "/stats"}/>;
+		return <Navigate to={"../poll/" + id + "/stats"} />;
 	}
 
 	const onValueChange = (event) => {

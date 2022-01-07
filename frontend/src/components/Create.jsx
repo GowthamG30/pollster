@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import Error from "./Error";
 import Navbar from "./Navbar";
@@ -85,7 +85,7 @@ const Create = () => {
 	};
 
 	if(redirect) {
-		return <Redirect to="/polls"/>;
+		return <Navigate to="/polls" />;
 	}
 
 	return (

@@ -1,5 +1,6 @@
 const cors = require("cors");
 const express = require("express");
+// const flash = require('connect-flash');
 const { Poll, User } = require("./database.js");
 const passport = require("passport");
 const port = process.env.PORT || 5000;
@@ -8,6 +9,7 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
+// app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -86,7 +88,12 @@ app.post("/api/register", (req, res) => {
 // Login
 app.post("/api/login", passport.authenticate("local", { failureRedirect: "/" }), (req, res) => {
 	res.end();
-	// res.status(401).send("Please provide a valid username and password.");
+	// https://stackoverflow.com/questions/15711127/express-passport-node-js-error-handling
+	// if failure -> res.status(401).send("Invalid username or password");
+	// https://github.com/jaredhanson/connect-flash
+	// passport.authenticate('local', { failureFlash: 'Invalid username or password.' });
+	// passport.authenticate("local", { failureRedirect: "/" })
+	// Need to tell this in frontend
 });
 
 // Logout
@@ -216,6 +223,15 @@ app.post("/api/vote/:id", (req, res) => {
 	}
 	else {
 		res.status(403).send("Session expired");
+	}
+});
+
+app.get("/api/test", (req, res) => {
+	if(req.isAuthenticated()) {
+		res.send("oyy");
+	}
+	else {
+		res.send("noo");
 	}
 });
 
